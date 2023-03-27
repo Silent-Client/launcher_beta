@@ -1,0 +1,68 @@
+{
+	"header": {
+		"play": "Play",
+		"skins": "Skins",
+		"store": "Store"
+	},
+	"login": {
+		"silent": {
+			"header": "Login to Silent Client",
+			"email": "Email",
+			"password": "Password",
+			"login": "Login",
+			"register": "Register to Silent Client",
+			"reset": "Reset password"
+		},
+		"minecraft": {
+			"header": "Login to Minecraft",
+			"token": "Token",
+			"login": "Login",
+			"get_token": "Get token",
+			"cracked": "Use Cracked Account"
+		},
+		"errors": {
+			"title": "Error",
+			"required": "This field is required",
+			"Incorrect login or password": "Incorrect login or password",
+			"Unknown error =(": "Unknown error =("
+		}
+	},
+	"launch": {
+		"header": "MC Settings",
+		"beta": "Beta",
+		"settings": "Settings",
+		"account": {
+			"title": "Account",
+			"edit": "Edit Account",
+			"logout": "Logout"
+		},
+		"button": {
+			"launch": "Launch",
+			"loading": "Loading"
+		},
+		"errors": {
+			"title": "Error",
+			"banned": "Your account has been banned",
+			"only_plus": ""
+		}
+	},
+	"news": {
+		"title": "News",
+		"read": "View Article"
+	},
+	"socials": {
+		"title": "Our Socials"
+	},
+	"only_plus_modal": {
+		"title": "Error",
+		"description": "This feature is only available to Silent+ subscribers",
+		"buy": "Subscribe"
+	},
+	"settings": {
+		"title": "Settings",
+		"ram": "Allocated RAM",
+		"width": "Resolution: Width",
+		"height": "Resolution: Height",
+		"language": "Language"
+	}
+}
