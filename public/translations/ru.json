@@ -1,0 +1,68 @@
+{
+	"header": {
+		"play": "Играть",
+		"skins": "Скины",
+		"store": "Магазин"
+	},
+	"login": {
+		"silent": {
+			"header": "Войдите в Silent Client",
+			"email": "Email",
+			"password": "Пароль",
+			"login": "Войти",
+			"register": "Зарегистрироваться",
+			"reset": "Восстановить пароль"
+		},
+		"minecraft": {
+			"header": "Войдите в Minecraft",
+			"token": "Токен",
+			"login": "Войти",
+			"get_token": "Получить токен",
+			"cracked": "Использовать пиратский аккаунт"
+		},
+		"errors": {
+			"title": "Ошибка",
+			"required": "Это поле обязательное",
+			"Incorrect login or password": "Неправильный логин или пароль",
+			"Unknown error =(": "Неизвестная ошибка!"
+		}
+	},
+	"launch": {
+		"header": "Настройки MC",
+		"beta": "Бета",
+		"settings": "Настройки",
+		"account": {
+			"title": "Аккаунт",
+			"edit": "Редактировать",
+			"logout": "Выйти"
+		},
+		"button": {
+			"launch": "Запуск",
+			"loading": "Загрузка"
+		},
+		"errors": {
+			"title": "Ошибка",
+			"banned": "Ваш аккаунт заблокирован",
+			"only_plus": ""
+		}
+	},
+	"news": {
+		"title": "Новости",
+		"read": "Читать"
+	},
+	"socials": {
+		"title": "Социальные сети"
+	},
+	"only_plus_modal": {
+		"title": "Ошибка",
+		"description": "Эта функция доступна только для подписчиков Silent+",
+		"buy": "Купить"
+	},
+	"settings": {
+		"title": "Настройки",
+		"ram": "Выделенная ОЗУ",
+		"width": "Разрешение: Ширина",
+		"height": "Разрешение: Высота",
+		"language": "Язык"
+	}
+}
