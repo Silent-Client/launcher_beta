@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import NeedElectron from "./pages/NeedElectron";
 import Play from "./pages/Play";
 import Settings from "./pages/Settings";
+import Skins from "./pages/Skins";
 import News from "./types/News";
 import version, { isDebug } from "./utils/version";
 
@@ -82,6 +83,7 @@ function App() {
 									<Routes>
 										<Route path="/" element={<Play news={news} />} />
 										<Route path="/settings" element={<Settings ram={ram} />} />
+										<Route path="/skins" element={<Skins />} />
 									</Routes>
 								)) || (
 									<Routes>

@@ -64,5 +64,23 @@
 		"width": "Resolution: Width",
 		"height": "Resolution: Height",
 		"language": "Language"
+	},
+	"skins": {
+		"title": "Custom skin",
+		"your_skin": "Your skin",
+		"errors": {
+			"title": "Error",
+			"file_error": "This is not a skin texture"
+		},
+		"edit": {
+			"title": "Skin editing",
+			"texture": "Skin texture",
+			"type": "Skin type",
+			"save": "Save"
+		},
+		"success": {
+			"title": "Success",
+			"description": "Your skin has been successfully saved"
+		}
 	}
 }

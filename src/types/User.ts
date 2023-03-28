@@ -7,6 +7,8 @@ export default interface User {
 	is_admin: number;
 	is_plus: number;
 	is_banned: number;
+	custom_skin: number;
+	skin_type: "default" | "slim";
 	mcAccessToken: string | null;
 	clientToken: string | null;
 	refresh_token: string | null;
