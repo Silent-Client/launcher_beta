@@ -173,7 +173,9 @@ function Skins() {
 							<Center>
 								<Heading size={"md"}>{t("skins.your_skin")}</Heading>
 							</Center>
-							<canvas height={"400px"} id="preview" />
+							<Center>
+								<canvas height={"400px"} id="preview" />
+							</Center>
 						</Stack>
 						<Stack
 							direction={"column"}

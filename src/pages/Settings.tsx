@@ -24,7 +24,6 @@ function Settings({ ram }: { ram: number }) {
 	const [width, setWidth] = useState(settings.width);
 	const [height, setHeight] = useState(settings.height);
 	const [discord, setDiscord] = useState(settings.discord);
-	const [afterLaunch, setAfterLaunch] = useState(settings.afterLaunch);
 
 	const [showTooltip, setShowTooltip] = useState(false);
 
@@ -49,7 +48,7 @@ function Settings({ ram }: { ram: number }) {
 								height: height,
 								memory: mem,
 								discord: discord,
-								afterLaunch: afterLaunch,
+								afterLaunch: "hide",
 							});
 						}}
 						max={ram - 2}
@@ -92,7 +91,7 @@ function Settings({ ram }: { ram: number }) {
 								height: height,
 								memory: memory,
 								discord: discord,
-								afterLaunch: afterLaunch,
+								afterLaunch: "hide",
 							});
 						}}
 					/>
@@ -117,7 +116,7 @@ function Settings({ ram }: { ram: number }) {
 								height: e.target.valueAsNumber,
 								memory: memory,
 								discord: discord,
-								afterLaunch: afterLaunch,
+								afterLaunch: "hide",
 							});
 						}}
 					/>
@@ -130,7 +129,7 @@ function Settings({ ram }: { ram: number }) {
 				>
 					<Heading size={"sm"}>Discord RPC</Heading>
 					<Switch
-						colorScheme={"whiteAlpha"}
+						colorScheme={"green"}
 						isChecked={discord}
 						onChange={e => {
 							setSettings({
@@ -139,7 +138,7 @@ function Settings({ ram }: { ram: number }) {
 								height: height,
 								memory: memory,
 								discord: !discord,
-								afterLaunch: afterLaunch,
+								afterLaunch: "hide",
 							});
 							setDiscord(!discord);
 						}}
