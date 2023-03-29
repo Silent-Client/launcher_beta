@@ -326,7 +326,7 @@ function Play({ news }: { news: News[] }) {
 							onClick={() =>
 								window
 									.require("electron")
-									.shell.openExternal("https://store,silentclient.net/plus")
+									.shell.openExternal("https://store.silentclient.net/plus")
 							}
 						>
 							{t("only_plus_modal.buy")}
