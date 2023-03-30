@@ -43,6 +43,8 @@ import { getUser, logout, updateAuth } from "../hooks/AuthManager";
 import * as SettingsManager from "../hooks/SettingsManager";
 import i18n from "../i18n";
 import panorama from "../images/panorama.webp";
+import plus_being from "../images/plus_being.png";
+import plus_promo from "../images/plus_promo.png";
 import steve from "../images/steve.png";
 import News from "../types/News";
 import { isAdmin, isBanned, isPlus } from "../utils/userUtils";
@@ -377,7 +379,22 @@ function Play({ news }: { news: News[] }) {
 						{t("launch.button.loading")}
 					</ModalHeader>
 					<ModalBody>
+						<Link
+							onClick={() =>
+								window
+									.require("electron")
+									.shell.openExternal("https://store.silentclient.net/plus")
+							}
+						>
+							<Image
+								src={!isPlus() ? plus_promo : plus_being}
+								borderRadius={"lg"}
+								w="400px"
+								h="150px"
+							></Image>
+						</Link>
 						<Progress
+							mt={5}
 							colorScheme={"whiteAlpha"}
 							borderRadius={"lg"}
 							isIndeterminate
