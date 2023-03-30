@@ -70,6 +70,11 @@ function App() {
 							afterLaunch: getSettings().afterLaunch,
 						});
 					}
+					console.log(
+						`Launcher Information:\n\nElectron: ${
+							ipcRenderer === null ? "Not Found" : "Found"
+						}\nRam: ${ram}\nVersion Index: ${versionIndex}\nDebug: ${isDebug()}`
+					);
 				}
 			} catch (error) {
 			} finally {

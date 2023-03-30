@@ -15,6 +15,7 @@ export function getSettings() {
 			memory: 2,
 			branch: "stable",
 			jarPath: null,
+			minecraftPath: "",
 			width: 1280,
 			height: 720,
 			discord: false,

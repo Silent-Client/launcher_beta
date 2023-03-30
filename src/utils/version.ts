@@ -12,7 +12,7 @@ export async function getVersionIndex() {
 		"https://api.github.com/repos/Silent-Client/launcher-releases/releases"
 	);
 
-	if (version() === "debug") {
+	if (isDebug()) {
 		return indexes.length + 1;
 	}
 
