@@ -61,6 +61,7 @@
 	},
 	"settings": {
 		"title": "Settings",
+		"path": "Minecraft Path",
 		"ram": "Allocated RAM",
 		"width": "Resolution: Width",
 		"height": "Resolution: Height",
