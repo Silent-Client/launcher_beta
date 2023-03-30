@@ -68,7 +68,7 @@ function Settings({
 						w="full"
 						spacing={1}
 					>
-						<Heading size={"sm"}>Minecraft Path</Heading>
+						<Heading size={"sm"}>{t("settings.path")}</Heading>
 						<Input
 							size={"sm"}
 							placeholder="Path"
