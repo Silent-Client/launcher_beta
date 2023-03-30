@@ -285,7 +285,7 @@ function Play({ news }: { news: News[] }) {
 								/>
 							</Stack>
 							<Button
-								minW={"146px"}
+								minW={"123.27px"}
 								size="sm"
 								onClick={() => ipcRenderer.send("app/getCustomJar")}
 							>
