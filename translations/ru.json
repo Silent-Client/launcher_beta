@@ -30,6 +30,7 @@
 	"launch": {
 		"header": "Настройки MC",
 		"beta": "Бета",
+		"test": "Тест",
 		"settings": "Настройки",
 		"account": {
 			"title": "Аккаунт",
@@ -43,7 +44,7 @@
 		"errors": {
 			"title": "Ошибка",
 			"banned": "Ваш аккаунт заблокирован",
-			"only_plus": ""
+			"select_jar": "Пожалуйста, выберите JAR файл"
 		}
 	},
 	"news": {
