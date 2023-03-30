@@ -73,7 +73,7 @@ function App() {
 					console.log(
 						`Launcher Information:\n\nElectron: ${
 							ipcRenderer === null ? "Not Found" : "Found"
-						}\nRam: ${ram}\nVersion Index: ${versionIndex}\nDebug: ${isDebug()}`
+						}\nVersion Index: ${versionIndex}\nDebug: ${isDebug()}`
 					);
 				}
 			} catch (error) {
