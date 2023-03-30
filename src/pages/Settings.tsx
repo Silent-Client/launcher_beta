@@ -54,7 +54,7 @@ function Settings({
 							onClick={() => {
 								window
 									.require("electron")
-									.dialog.showOpenDialog({
+									.remote.dialog.showOpenDialog({
 										defaultPath: path,
 										properties: ["openDirectory"],
 									})

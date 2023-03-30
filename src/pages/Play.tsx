@@ -274,7 +274,7 @@ function Play({ news }: { news: News[] }) {
 								onClick={() => {
 									window
 										.require("electron")
-										.dialog.showOpenDialog({
+										.remote.dialog.showOpenDialog({
 											properties: ["openFile"],
 										})
 										.then(function (response: any) {
