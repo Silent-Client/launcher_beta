@@ -7,6 +7,8 @@ export default interface User {
 	is_admin: number;
 	is_partner: number;
 	is_plus: number;
+	is_tester: number;
+	is_staff: number;
 	is_banned: number;
 	custom_skin: number;
 	skin_type: "default" | "slim";
