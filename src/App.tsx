@@ -45,7 +45,11 @@ function App() {
 					news.news.length = 3;
 				}
 				setNews(news.news);
-
+				console.log(
+					`Launcher Information:\n\nElectron: ${
+						ipcRenderer === null ? "Not Found" : "Found"
+					}\nVersion Index: ${versionIndex}\nDebug: ${isDebug()}`
+				);
 				if (isDebug()) {
 					return;
 				}
@@ -56,11 +60,10 @@ function App() {
 					const ram = await ipcRenderer?.invoke("app/ram");
 					setRam(ram);
 					if (!getSettings().minecraftPath && versionIndex > 1) {
-						console.log("Get path");
 						const path = await ipcRenderer?.invoke(
 							"app/getDefaultMinecraftPath"
 						);
-						console.log(path);
+
 						setSettings({
 							memory: getSettings().memory,
 							branch: getSettings().branch,
@@ -73,11 +76,6 @@ function App() {
 						});
 					}
 				}
-				console.log(
-					`Launcher Information:\n\nElectron: ${
-						ipcRenderer === null ? "Not Found" : "Found"
-					}\nVersion Index: ${versionIndex}\nDebug: ${isDebug()}`
-				);
 			} catch (error) {
 				console.error(error);
 			} finally {

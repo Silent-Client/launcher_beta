@@ -74,7 +74,11 @@ function Settings({
 							placeholder="Path"
 							value={path}
 							readOnly
-							onClick={() => ipcRenderer.send("app/getCustomPath")}
+							onClick={() =>
+								ipcRenderer.send("app/getCustomPath", {
+									defaultPath: getSettings().minecraftPath,
+								})
+							}
 						/>
 					</Stack>
 				)}
