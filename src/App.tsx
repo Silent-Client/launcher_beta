@@ -56,13 +56,14 @@ function App() {
 					const ram = await ipcRenderer?.invoke("app/ram");
 					setRam(ram);
 					if (!getSettings().minecraftPath && versionIndex > 1) {
+						const path = await ipcRenderer?.invoke(
+							"app/getDefaultMinecraftPath"
+						);
 						setSettings({
 							memory: getSettings().memory,
 							branch: getSettings().branch,
 							jarPath: getSettings().jarPath,
-							minecraftPath: await ipcRenderer?.invoke(
-								"app/getDefaultMinecraftPath"
-							),
+							minecraftPath: path,
 							width: getSettings().width,
 							height: getSettings().height,
 							discord: getSettings().discord,
