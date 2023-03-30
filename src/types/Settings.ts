@@ -1,6 +1,8 @@
 export default interface Settings {
 	memory: number;
-	branch: "stable" | "experimental";
+	branch: "stable" | "experimental" | "test";
+	jarPath: string | null;
+	minecraftPath: string;
 	width: number;
 	height: number;
 	discord: boolean;

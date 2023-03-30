@@ -14,6 +14,7 @@ export function getSettings() {
 		return {
 			memory: 2,
 			branch: "stable",
+			jarPath: null,
 			width: 1280,
 			height: 720,
 			discord: false,

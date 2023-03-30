@@ -5,6 +5,7 @@ export default interface User {
 	username: string;
 	original_username: string;
 	is_admin: number;
+	is_partner: number;
 	is_plus: number;
 	is_banned: number;
 	custom_skin: number;

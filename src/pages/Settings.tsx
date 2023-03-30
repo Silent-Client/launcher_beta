@@ -15,7 +15,13 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getSettings, setSettings } from "../hooks/SettingsManager";
 
-function Settings({ ram }: { ram: number }) {
+function Settings({
+	ram,
+	versionIndex,
+}: {
+	ram: number;
+	versionIndex: number;
+}) {
 	const { t, i18n } = useTranslation();
 
 	const settings = getSettings();
@@ -24,6 +30,7 @@ function Settings({ ram }: { ram: number }) {
 	const [width, setWidth] = useState(settings.width);
 	const [height, setHeight] = useState(settings.height);
 	const [discord, setDiscord] = useState(settings.discord);
+	const [path, setPath] = useState(settings.minecraftPath);
 
 	const [showTooltip, setShowTooltip] = useState(false);
 
@@ -31,6 +38,49 @@ function Settings({ ram }: { ram: number }) {
 		<Container maxW="full" minW="full">
 			<Heading w="full">{t("settings.title")}</Heading>
 			<Stack mt={5} direction={"column"} spacing={5}>
+				{versionIndex > 1 && (
+					<Stack
+						direction={"row"}
+						justifyContent="space-between"
+						w="full"
+						spacing={1}
+					>
+						<Heading size={"sm"}>Minecraft Path</Heading>
+						<Input
+							size={"sm"}
+							placeholder="Path"
+							value={path}
+							readOnly
+							onClick={() => {
+								window
+									.require("electron")
+									.dialog.showOpenDialog({
+										defaultPath: path,
+										properties: ["openDirectory"],
+									})
+									.then(function (response: any) {
+										if (!response.canceled) {
+											console.log(response);
+										} else {
+										}
+									});
+							}}
+							// onChange={e => {
+							// 	setWidth(e.target.valueAsNumber);
+							// 	setSettings({
+							// 		branch: settings.branch,
+							// 		jarPath: settings.jarPath,
+							// 		minecraftPath: path,
+							// 		width: e.target.valueAsNumber,
+							// 		height: height,
+							// 		memory: memory,
+							// 		discord: discord,
+							// 		afterLaunch: "hide",
+							// 	});
+							// }}
+						/>
+					</Stack>
+				)}
 				<Stack
 					direction={"row"}
 					justifyContent="space-between"
@@ -44,6 +94,8 @@ function Settings({ ram }: { ram: number }) {
 							setMemory(mem);
 							setSettings({
 								branch: settings.branch,
+								jarPath: settings.jarPath,
+								minecraftPath: path,
 								width: width,
 								height: height,
 								memory: mem,
@@ -87,6 +139,8 @@ function Settings({ ram }: { ram: number }) {
 							setWidth(e.target.valueAsNumber);
 							setSettings({
 								branch: settings.branch,
+								jarPath: settings.jarPath,
+								minecraftPath: path,
 								width: e.target.valueAsNumber,
 								height: height,
 								memory: memory,
@@ -112,6 +166,8 @@ function Settings({ ram }: { ram: number }) {
 							setHeight(e.target.valueAsNumber);
 							setSettings({
 								branch: settings.branch,
+								jarPath: settings.jarPath,
+								minecraftPath: path,
 								width: width,
 								height: e.target.valueAsNumber,
 								memory: memory,
@@ -134,6 +190,8 @@ function Settings({ ram }: { ram: number }) {
 						onChange={e => {
 							setSettings({
 								branch: settings.branch,
+								jarPath: settings.jarPath,
+								minecraftPath: path,
 								width: width,
 								height: height,
 								memory: memory,

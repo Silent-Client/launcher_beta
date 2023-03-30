@@ -45,6 +45,7 @@ import i18n from "../i18n";
 import panorama from "../images/panorama.webp";
 import steve from "../images/steve.png";
 import News from "../types/News";
+import { isAdmin, isBanned, isPlus } from "../utils/userUtils";
 
 function Play({ news }: { news: News[] }) {
 	let ipcRenderer: any = null;
@@ -62,6 +63,9 @@ function Play({ news }: { news: News[] }) {
 	const [beta, setBeta] = useState<boolean>(
 		SettingsManager.getSettings().branch === "experimental"
 	);
+	const [test, setTest] = useState<boolean>(
+		SettingsManager.getSettings().branch === "test"
+	);
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -74,13 +78,16 @@ function Play({ news }: { news: News[] }) {
 
 	useEffect(() => {
 		if (
-			SettingsManager.getSettings().branch === "experimental" &&
-			getUser()?.is_plus === 0
+			(SettingsManager.getSettings().branch === "experimental" && !isPlus()) ||
+			(SettingsManager.getSettings().branch === "test" && !isAdmin())
 		) {
 			setBeta(false);
+			setTest(false);
 			SettingsManager.setSettings({
 				memory: SettingsManager.getSettings().memory,
 				branch: "stable",
+				jarPath: SettingsManager.getSettings().jarPath,
+				minecraftPath: SettingsManager.getSettings().minecraftPath,
 				width: SettingsManager.getSettings().width,
 				height: SettingsManager.getSettings().height,
 				discord: SettingsManager.getSettings().discord,
@@ -94,10 +101,24 @@ function Play({ news }: { news: News[] }) {
 		try {
 			setStatus("Refreshing authorisation");
 			await updateAuth();
-			if (getUser()?.is_banned === 1) {
+			if (isBanned()) {
 				toast({
 					title: t("launch.errors.title"),
 					description: t("launch.errors.banned"),
+					status: "error",
+					duration: 6000,
+					isClosable: true,
+					position: "bottom",
+				});
+				return;
+			}
+			if (
+				SettingsManager.getSettings().branch === "test" &&
+				!SettingsManager.getSettings().jarPath
+			) {
+				toast({
+					title: t("launch.errors.title"),
+					description: t("launch.errors.select_jar"),
 					status: "error",
 					duration: 6000,
 					isClosable: true,
@@ -170,15 +191,18 @@ function Play({ news }: { news: News[] }) {
 							<Switch
 								isChecked={beta}
 								onChange={e => {
-									if (getUser()?.is_plus === 0) {
+									if (!isPlus()) {
 										onOpen();
 										return;
 									}
 
 									setBeta(!beta);
+									setTest(false);
 									SettingsManager.setSettings({
 										memory: SettingsManager.getSettings().memory,
 										branch: !beta ? "experimental" : "stable",
+										jarPath: SettingsManager.getSettings().jarPath,
+										minecraftPath: SettingsManager.getSettings().minecraftPath,
 										width: SettingsManager.getSettings().width,
 										height: SettingsManager.getSettings().height,
 										discord: SettingsManager.getSettings().discord,
@@ -214,6 +238,68 @@ function Play({ news }: { news: News[] }) {
 							</Stack>
 						</RLink>
 					</Stack>
+					{isAdmin() && (
+						<Stack spacing={5} direction={"row"} justifyContent="space-between">
+							<Stack w="full" direction={"row"} justifyContent="space-between">
+								<Center h="full">
+									<Text fontSize={"lg"} fontWeight={"bold"}>
+										{t("launch.test")}:
+									</Text>
+								</Center>
+								<Switch
+									isChecked={test}
+									onChange={e => {
+										setBeta(false);
+										setTest(!test);
+										SettingsManager.setSettings({
+											memory: SettingsManager.getSettings().memory,
+											branch: !test ? "test" : "stable",
+											jarPath: SettingsManager.getSettings().jarPath,
+											minecraftPath:
+												SettingsManager.getSettings().minecraftPath,
+											width: SettingsManager.getSettings().width,
+											height: SettingsManager.getSettings().height,
+											discord: SettingsManager.getSettings().discord,
+											afterLaunch: SettingsManager.getSettings().afterLaunch,
+										});
+									}}
+									colorScheme={"green"}
+									size={"lg"}
+									id="beta"
+								/>
+							</Stack>
+							<Button
+								w={"full"}
+								size="sm"
+								onClick={() => {
+									window
+										.require("electron")
+										.dialog.showOpenDialog({
+											properties: ["openFile"],
+										})
+										.then(function (response: any) {
+											if (!response.canceled) {
+												SettingsManager.setSettings({
+													memory: SettingsManager.getSettings().memory,
+													branch: SettingsManager.getSettings().branch,
+													jarPath: response.filePaths[0],
+													minecraftPath:
+														SettingsManager.getSettings().minecraftPath,
+													width: SettingsManager.getSettings().width,
+													height: SettingsManager.getSettings().height,
+													discord: SettingsManager.getSettings().discord,
+													afterLaunch:
+														SettingsManager.getSettings().afterLaunch,
+												});
+											} else {
+											}
+										});
+								}}
+							>
+								Custom Jar
+							</Button>
+						</Stack>
+					)}
 					<Stack direction={"row"} w="full" justifyContent={"space-between"}>
 						<Center h="full">
 							<Text fontSize={"lg"} fontWeight={"bold"}>

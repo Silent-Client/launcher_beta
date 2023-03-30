@@ -30,6 +30,7 @@
 	"launch": {
 		"header": "MC Settings",
 		"beta": "Beta",
+		"test": "Test",
 		"settings": "Settings",
 		"account": {
 			"title": "Account",
@@ -43,7 +44,7 @@
 		"errors": {
 			"title": "Error",
 			"banned": "Your account has been banned",
-			"only_plus": ""
+			"select_jar": "Please select a JAR file"
 		}
 	},
 	"news": {

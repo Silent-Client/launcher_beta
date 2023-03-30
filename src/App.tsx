@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import { getAuth, getUser } from "./hooks/AuthManager";
+import { getSettings, setSettings } from "./hooks/SettingsManager";
 import full_logo from "./images/full_logo.svg";
 import Login from "./pages/Login";
 import NeedElectron from "./pages/NeedElectron";
@@ -11,11 +12,12 @@ import Play from "./pages/Play";
 import Settings from "./pages/Settings";
 import Skins from "./pages/Skins";
 import News from "./types/News";
-import version, { isDebug } from "./utils/version";
+import version, { getVersionIndex, isDebug } from "./utils/version";
 
 function App() {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [ram, setRam] = useState<number>(16);
+	const [versionIndex, setVersionIndex] = useState<number>(16);
 	const [needElectron, setNeedElectron] = useState<boolean>(false);
 	const [news, setNews] = useState<News[]>([]);
 
@@ -30,6 +32,9 @@ function App() {
 				} catch (error) {
 					console.error(error);
 				}
+
+				const versionIndex = await getVersionIndex();
+				setVersionIndex(versionIndex);
 
 				await getAuth();
 
@@ -50,6 +55,20 @@ function App() {
 				} else {
 					const ram = await ipcRenderer?.invoke("app/ram");
 					setRam(ram);
+					if (!getSettings().minecraftPath && versionIndex > 1) {
+						setSettings({
+							memory: getSettings().memory,
+							branch: getSettings().branch,
+							jarPath: getSettings().jarPath,
+							minecraftPath: await ipcRenderer?.invoke(
+								"app/getDefaultMinecraftPath"
+							),
+							width: getSettings().width,
+							height: getSettings().height,
+							discord: getSettings().discord,
+							afterLaunch: getSettings().afterLaunch,
+						});
+					}
 				}
 			} catch (error) {
 			} finally {
@@ -82,7 +101,12 @@ function App() {
 								{(getUser() && (
 									<Routes>
 										<Route path="/" element={<Play news={news} />} />
-										<Route path="/settings" element={<Settings ram={ram} />} />
+										<Route
+											path="/settings"
+											element={
+												<Settings ram={ram} versionIndex={versionIndex} />
+											}
+										/>
 										<Route path="/skins" element={<Skins />} />
 									</Routes>
 								)) || (
