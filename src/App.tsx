@@ -56,9 +56,11 @@ function App() {
 					const ram = await ipcRenderer?.invoke("app/ram");
 					setRam(ram);
 					if (!getSettings().minecraftPath && versionIndex > 1) {
+						console.log("Get path");
 						const path = await ipcRenderer?.invoke(
 							"app/getDefaultMinecraftPath"
 						);
+						console.log(path);
 						setSettings({
 							memory: getSettings().memory,
 							branch: getSettings().branch,
@@ -70,13 +72,14 @@ function App() {
 							afterLaunch: getSettings().afterLaunch,
 						});
 					}
-					console.log(
-						`Launcher Information:\n\nElectron: ${
-							ipcRenderer === null ? "Not Found" : "Found"
-						}\nVersion Index: ${versionIndex}\nDebug: ${isDebug()}`
-					);
 				}
+				console.log(
+					`Launcher Information:\n\nElectron: ${
+						ipcRenderer === null ? "Not Found" : "Found"
+					}\nVersion Index: ${versionIndex}\nDebug: ${isDebug()}`
+				);
 			} catch (error) {
+				console.error(error);
 			} finally {
 				setIsLoading(false);
 			}
