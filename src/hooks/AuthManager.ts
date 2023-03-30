@@ -13,6 +13,8 @@ function setAuth(user: User) {
 			username: user.username,
 			original_username: user.original_username,
 			is_admin: user.is_admin,
+			is_staff: user.is_staff,
+			is_tester: user.is_tester,
 			is_partner: user.is_partner,
 			is_plus: user.is_plus,
 			custom_skin: user.custom_skin,
