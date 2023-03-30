@@ -22,6 +22,12 @@ function Settings({
 	ram: number;
 	versionIndex: number;
 }) {
+	let ipcRenderer: any = null;
+	try {
+		ipcRenderer = window.require("electron").ipcRenderer;
+	} catch (error) {
+		console.error(error);
+	}
 	const { t, i18n } = useTranslation();
 
 	const settings = getSettings();
@@ -33,6 +39,23 @@ function Settings({
 	const [path, setPath] = useState(settings.minecraftPath);
 
 	const [showTooltip, setShowTooltip] = useState(false);
+
+	ipcRenderer?.on(
+		"settings/customPath",
+		function (evt: any, message: { path: string }) {
+			setPath(message.path);
+			setSettings({
+				branch: settings.branch,
+				jarPath: settings.jarPath,
+				minecraftPath: message.path,
+				width: width,
+				height: height,
+				memory: memory,
+				discord: discord,
+				afterLaunch: "hide",
+			});
+		}
+	);
 
 	return (
 		<Container maxW="full" minW="full">
@@ -51,33 +74,7 @@ function Settings({
 							placeholder="Path"
 							value={path}
 							readOnly
-							onClick={() => {
-								window
-									.require("electron")
-									.remote.dialog.showOpenDialog({
-										defaultPath: path,
-										properties: ["openDirectory"],
-									})
-									.then(function (response: any) {
-										if (!response.canceled) {
-											console.log(response);
-										} else {
-										}
-									});
-							}}
-							// onChange={e => {
-							// 	setWidth(e.target.valueAsNumber);
-							// 	setSettings({
-							// 		branch: settings.branch,
-							// 		jarPath: settings.jarPath,
-							// 		minecraftPath: path,
-							// 		width: e.target.valueAsNumber,
-							// 		height: height,
-							// 		memory: memory,
-							// 		discord: discord,
-							// 		afterLaunch: "hide",
-							// 	});
-							// }}
+							onClick={() => ipcRenderer.send("app/getCustomPath")}
 						/>
 					</Stack>
 				)}

@@ -76,6 +76,22 @@ function Play({ news }: { news: News[] }) {
 		}
 	);
 
+	ipcRenderer?.on(
+		"settings/customJar",
+		function (evt: any, message: { path: string }) {
+			SettingsManager.setSettings({
+				memory: SettingsManager.getSettings().memory,
+				branch: SettingsManager.getSettings().branch,
+				jarPath: message.path,
+				minecraftPath: SettingsManager.getSettings().minecraftPath,
+				width: SettingsManager.getSettings().width,
+				height: SettingsManager.getSettings().height,
+				discord: SettingsManager.getSettings().discord,
+				afterLaunch: SettingsManager.getSettings().afterLaunch,
+			});
+		}
+	);
+
 	useEffect(() => {
 		if (
 			(SettingsManager.getSettings().branch === "experimental" && !isPlus()) ||
@@ -265,36 +281,13 @@ function Play({ news }: { news: News[] }) {
 									}}
 									colorScheme={"green"}
 									size={"lg"}
-									id="beta"
+									id="test"
 								/>
 							</Stack>
 							<Button
-								w={"full"}
+								minW={"146px"}
 								size="sm"
-								onClick={() => {
-									window
-										.require("electron")
-										.remote.dialog.showOpenDialog({
-											properties: ["openFile"],
-										})
-										.then(function (response: any) {
-											if (!response.canceled) {
-												SettingsManager.setSettings({
-													memory: SettingsManager.getSettings().memory,
-													branch: SettingsManager.getSettings().branch,
-													jarPath: response.filePaths[0],
-													minecraftPath:
-														SettingsManager.getSettings().minecraftPath,
-													width: SettingsManager.getSettings().width,
-													height: SettingsManager.getSettings().height,
-													discord: SettingsManager.getSettings().discord,
-													afterLaunch:
-														SettingsManager.getSettings().afterLaunch,
-												});
-											} else {
-											}
-										});
-								}}
+								onClick={() => ipcRenderer.send("app/getCustomJar")}
 							>
 								Custom Jar
 							</Button>
