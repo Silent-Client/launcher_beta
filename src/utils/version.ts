@@ -21,13 +21,13 @@ export async function getVersionIndex() {
 	}
 
 	let index: number = 0;
-	let forIndex: number = 1;
+	let forIndex: number = indexes.length;
 
 	for (const release of indexes) {
 		if (release.tag_name === version()) {
 			index = forIndex;
 		}
-		forIndex++;
+		forIndex--;
 	}
 
 	return index;
