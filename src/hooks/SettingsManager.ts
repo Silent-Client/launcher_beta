@@ -20,6 +20,7 @@ export function getSettings() {
 			height: 720,
 			discord: false,
 			afterLaunch: "hide",
+			preLoadCosmetics: true,
 		} as Settings;
 	}
 }

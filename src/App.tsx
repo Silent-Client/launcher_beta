@@ -16,7 +16,7 @@ import version, { getVersionIndex, isDebug } from "./utils/version";
 
 function App() {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [ram, setRam] = useState<number>(16);
+	const [ram, setRam] = useState<number>(16000);
 	const [versionIndex, setVersionIndex] = useState<number>(16);
 	const [needElectron, setNeedElectron] = useState<boolean>(false);
 	const [news, setNews] = useState<News[]>([]);
@@ -45,11 +45,38 @@ function App() {
 					news.news.length = 3;
 				}
 				setNews(news.news);
+				if (getSettings().preLoadCosmetics === undefined) {
+					setSettings({
+						memory: getSettings().memory,
+						branch: getSettings().branch,
+						jarPath: getSettings().jarPath,
+						minecraftPath: getSettings().minecraftPath,
+						width: getSettings().width,
+						height: getSettings().height,
+						discord: getSettings().discord,
+						afterLaunch: getSettings().afterLaunch,
+						preLoadCosmetics: true,
+					});
+				}
+				if (versionIndex > 2 && getSettings().memory < 1000) {
+					setSettings({
+						memory: getSettings().memory * 1000,
+						branch: getSettings().branch,
+						jarPath: getSettings().jarPath,
+						minecraftPath: getSettings().minecraftPath,
+						width: getSettings().width,
+						height: getSettings().height,
+						discord: getSettings().discord,
+						afterLaunch: getSettings().afterLaunch,
+						preLoadCosmetics: true,
+					});
+				}
 				console.log(
 					`Launcher Information:\n\nElectron: ${
 						ipcRenderer === null ? "Not Found" : "Found"
 					}\nVersion Index: ${versionIndex}\nDebug: ${isDebug()}`
 				);
+
 				if (isDebug()) {
 					return;
 				}
@@ -73,6 +100,7 @@ function App() {
 							height: getSettings().height,
 							discord: getSettings().discord,
 							afterLaunch: getSettings().afterLaunch,
+							preLoadCosmetics: getSettings().preLoadCosmetics,
 						});
 					}
 				}

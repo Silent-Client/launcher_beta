@@ -90,6 +90,7 @@ function Play({ news }: { news: News[] }) {
 				height: SettingsManager.getSettings().height,
 				discord: SettingsManager.getSettings().discord,
 				afterLaunch: SettingsManager.getSettings().afterLaunch,
+				preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
 			});
 		}
 	);
@@ -110,6 +111,7 @@ function Play({ news }: { news: News[] }) {
 				height: SettingsManager.getSettings().height,
 				discord: SettingsManager.getSettings().discord,
 				afterLaunch: SettingsManager.getSettings().afterLaunch,
+				preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
 			});
 		}
 	}, []);
@@ -225,6 +227,8 @@ function Play({ news }: { news: News[] }) {
 										height: SettingsManager.getSettings().height,
 										discord: SettingsManager.getSettings().discord,
 										afterLaunch: SettingsManager.getSettings().afterLaunch,
+										preLoadCosmetics:
+											SettingsManager.getSettings().preLoadCosmetics,
 									});
 								}}
 								colorScheme={"green"}
@@ -279,6 +283,8 @@ function Play({ news }: { news: News[] }) {
 											height: SettingsManager.getSettings().height,
 											discord: SettingsManager.getSettings().discord,
 											afterLaunch: SettingsManager.getSettings().afterLaunch,
+											preLoadCosmetics:
+												SettingsManager.getSettings().preLoadCosmetics,
 										});
 									}}
 									colorScheme={"green"}

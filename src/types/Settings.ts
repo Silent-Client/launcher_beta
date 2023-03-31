@@ -7,4 +7,5 @@ export default interface Settings {
 	height: number;
 	discord: boolean;
 	afterLaunch: "hide" | "show";
+	preLoadCosmetics: boolean;
 }

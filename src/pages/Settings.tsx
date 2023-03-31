@@ -36,6 +36,9 @@ function Settings({
 	const [width, setWidth] = useState(settings.width);
 	const [height, setHeight] = useState(settings.height);
 	const [discord, setDiscord] = useState(settings.discord);
+	const [preLoadCosmetics, setPreLoadCosmetics] = useState(
+		settings.preLoadCosmetics
+	);
 	const [path, setPath] = useState(settings.minecraftPath);
 
 	const [showTooltip, setShowTooltip] = useState(false);
@@ -53,6 +56,7 @@ function Settings({
 				memory: memory,
 				discord: discord,
 				afterLaunch: "hide",
+				preLoadCosmetics,
 			});
 		}
 	);
@@ -102,10 +106,11 @@ function Settings({
 								memory: mem,
 								discord: discord,
 								afterLaunch: "hide",
+								preLoadCosmetics,
 							});
 						}}
-						max={ram - 2}
-						min={1}
+						max={ram - (versionIndex > 2 ? 2000 : 2)}
+						min={versionIndex > 2 ? 1000 : 1}
 						value={memory}
 						onMouseEnter={() => setShowTooltip(true)}
 						onMouseLeave={() => setShowTooltip(false)}
@@ -118,7 +123,7 @@ function Settings({
 							colorScheme={"blackAlpha"}
 							placement="top"
 							isOpen={showTooltip}
-							label={`${memory} GB`}
+							label={`${memory} ${versionIndex > 2 ? "MB" : "GB"}`}
 						>
 							<SliderThumb />
 						</Tooltip>
@@ -147,6 +152,7 @@ function Settings({
 								memory: memory,
 								discord: discord,
 								afterLaunch: "hide",
+								preLoadCosmetics,
 							});
 						}}
 					/>
@@ -174,6 +180,7 @@ function Settings({
 								memory: memory,
 								discord: discord,
 								afterLaunch: "hide",
+								preLoadCosmetics,
 							});
 						}}
 					/>
@@ -188,7 +195,7 @@ function Settings({
 					<Switch
 						colorScheme={"green"}
 						isChecked={discord}
-						onChange={e => {
+						onChange={() => {
 							setSettings({
 								branch: settings.branch,
 								jarPath: settings.jarPath,
@@ -198,6 +205,7 @@ function Settings({
 								memory: memory,
 								discord: !discord,
 								afterLaunch: "hide",
+								preLoadCosmetics,
 							});
 							setDiscord(!discord);
 						}}
@@ -220,6 +228,38 @@ function Settings({
 							: "Switch to English"}
 					</Link>
 				</Stack>
+				{versionIndex > 2 && (
+					<Stack
+						direction={"row"}
+						justifyContent="space-between"
+						w="full"
+						spacing={1}
+					>
+						<Tooltip label={t("settings.preLoadCosmetics.tooltip")}>
+							<Heading size={"sm"}>
+								{t("settings.preLoadCosmetics.title")}
+							</Heading>
+						</Tooltip>
+						<Switch
+							colorScheme={"green"}
+							isChecked={preLoadCosmetics}
+							onChange={e => {
+								setSettings({
+									branch: settings.branch,
+									jarPath: settings.jarPath,
+									minecraftPath: path,
+									width: width,
+									height: height,
+									memory: memory,
+									discord: discord,
+									afterLaunch: "hide",
+									preLoadCosmetics: !preLoadCosmetics,
+								});
+								setPreLoadCosmetics(!preLoadCosmetics);
+							}}
+						/>
+					</Stack>
+				)}
 			</Stack>
 		</Container>
 	);

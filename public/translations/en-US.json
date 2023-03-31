@@ -65,7 +65,11 @@
 		"ram": "Allocated RAM",
 		"width": "Resolution: Width",
 		"height": "Resolution: Height",
-		"language": "Language"
+		"language": "Language",
+		"preLoadCosmetics": {
+			"title": "Загружать текстуры косметики при запуске",
+			"tooltip": "Эта настройка влияет на скорость запуска игры. Выключите ее если хотите чтобы игра запускалась быстрее."
+		}
 	},
 	"skins": {
 		"title": "Custom skin",
