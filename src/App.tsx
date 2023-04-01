@@ -1,4 +1,4 @@
-import { Box, Center, Image } from "@chakra-ui/react";
+import { Box, Center, Image, Stack } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
@@ -127,31 +127,39 @@ function App() {
 				<Box id="launcher">
 					{(needElectron && <NeedElectron />) || (
 						<>
-							{getUser() && <Header />}
-							<Box
-								paddingInlineStart={5}
-								paddingInlineEnd={5}
-								paddingTop={5}
-								mb={5}
+							<Stack
+								direction={"column"}
+								justifyContent="space-between"
+								minH="100vh"
 							>
-								{(getUser() && (
-									<Routes>
-										<Route path="/" element={<Play news={news} />} />
-										<Route
-											path="/settings"
-											element={
-												<Settings ram={ram} versionIndex={versionIndex} />
-											}
-										/>
-										<Route path="/skins" element={<Skins />} />
-									</Routes>
-								)) || (
-									<Routes>
-										<Route path="*" element={<Login />} />
-									</Routes>
-								)}
-							</Box>
-							<Footer versionIndex={versionIndex} />
+								<Box>
+									{getUser() && <Header />}
+									<Box
+										paddingInlineStart={5}
+										paddingInlineEnd={5}
+										paddingTop={5}
+										mb={5}
+									>
+										{(getUser() && (
+											<Routes>
+												<Route path="/" element={<Play news={news} />} />
+												<Route
+													path="/settings"
+													element={
+														<Settings ram={ram} versionIndex={versionIndex} />
+													}
+												/>
+												<Route path="/skins" element={<Skins />} />
+											</Routes>
+										)) || (
+											<Routes>
+												<Route path="*" element={<Login />} />
+											</Routes>
+										)}
+									</Box>
+								</Box>
+								<Footer versionIndex={versionIndex} />
+							</Stack>
 						</>
 					)}
 				</Box>
