@@ -2,6 +2,7 @@ import { Box, Center, Image } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { getAuth, getUser } from "./hooks/AuthManager";
 import { getSettings, setSettings } from "./hooks/SettingsManager";
@@ -150,6 +151,7 @@ function App() {
 									</Routes>
 								)}
 							</Box>
+							<Footer versionIndex={versionIndex} />
 						</>
 					)}
 				</Box>
