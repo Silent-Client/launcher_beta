@@ -88,5 +88,13 @@
 			"title": "Success",
 			"description": "Your skin has been successfully saved"
 		}
+	},
+	"footer": {
+		"bug": "Submit Bug Report",
+		"status": "Status",
+		"support": "Support",
+		"errors": {
+			"title": "Error"
+		}
 	}
 }
