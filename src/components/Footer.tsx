@@ -1,6 +1,7 @@
 import { Button, Link, Stack, Text, useToast } from "@chakra-ui/react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getSettings } from "../hooks/SettingsManager";
 
 function Footer({ versionIndex }: { versionIndex: number }) {
 	const toast = useToast();
@@ -49,7 +50,9 @@ function Footer({ versionIndex }: { versionIndex: number }) {
 						if (versionIndex > 3) {
 							setIsLoading(true);
 							try {
-								const data = await ipcRenderer.invoke("app/bugReport");
+								const data = await ipcRenderer.invoke("app/bugReport", {
+									settings: getSettings(),
+								});
 
 								if (data.error) {
 									toast({
