@@ -29,6 +29,7 @@
 	},
 	"launch": {
 		"header": "MC Settings",
+		"mcVersion": "MC Version",
 		"beta": "Beta",
 		"test": "Test",
 		"settings": "Settings",

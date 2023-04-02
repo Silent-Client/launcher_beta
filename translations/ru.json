@@ -29,6 +29,7 @@
 	},
 	"launch": {
 		"header": "Настройки MC",
+		"mcVersion": "Версия MC",
 		"beta": "Бета",
 		"test": "Тест",
 		"settings": "Настройки",
