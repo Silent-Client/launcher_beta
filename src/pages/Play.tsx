@@ -138,7 +138,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	const launch = async () => {
 		setIsLoading(true);
 		try {
-			setStatus("Refreshing authorisation");
+			setStatus("Refreshing authorization");
 			await updateAuth();
 			if (isBanned()) {
 				toast({
