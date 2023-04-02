@@ -50,6 +50,7 @@ function App() {
 					setSettings({
 						memory: getSettings().memory,
 						branch: getSettings().branch,
+						version: getSettings().version,
 						jarPath: getSettings().jarPath,
 						minecraftPath: getSettings().minecraftPath,
 						width: getSettings().width,
@@ -63,6 +64,7 @@ function App() {
 					setSettings({
 						memory: getSettings().memory * 1000,
 						branch: getSettings().branch,
+						version: getSettings().version,
 						jarPath: getSettings().jarPath,
 						minecraftPath: getSettings().minecraftPath,
 						width: getSettings().width,
@@ -95,6 +97,7 @@ function App() {
 						setSettings({
 							memory: getSettings().memory,
 							branch: getSettings().branch,
+							version: getSettings().version,
 							jarPath: getSettings().jarPath,
 							minecraftPath: path,
 							width: getSettings().width,
@@ -142,7 +145,12 @@ function App() {
 									>
 										{(getUser() && (
 											<Routes>
-												<Route path="/" element={<Play news={news} />} />
+												<Route
+													path="/"
+													element={
+														<Play news={news} versionIndex={versionIndex} />
+													}
+												/>
 												<Route
 													path="/settings"
 													element={

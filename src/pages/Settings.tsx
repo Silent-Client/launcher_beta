@@ -49,6 +49,7 @@ function Settings({
 			setPath(message.path);
 			setSettings({
 				branch: settings.branch,
+				version: settings.version,
 				jarPath: settings.jarPath,
 				minecraftPath: message.path,
 				width: width,
@@ -99,6 +100,7 @@ function Settings({
 							setMemory(mem);
 							setSettings({
 								branch: settings.branch,
+								version: settings.version,
 								jarPath: settings.jarPath,
 								minecraftPath: path,
 								width: width,
@@ -145,6 +147,7 @@ function Settings({
 							setWidth(e.target.valueAsNumber);
 							setSettings({
 								branch: settings.branch,
+								version: settings.version,
 								jarPath: settings.jarPath,
 								minecraftPath: path,
 								width: e.target.valueAsNumber,
@@ -173,6 +176,7 @@ function Settings({
 							setHeight(e.target.valueAsNumber);
 							setSettings({
 								branch: settings.branch,
+								version: settings.version,
 								jarPath: settings.jarPath,
 								minecraftPath: path,
 								width: width,
@@ -198,6 +202,7 @@ function Settings({
 						onChange={() => {
 							setSettings({
 								branch: settings.branch,
+								version: settings.version,
 								jarPath: settings.jarPath,
 								minecraftPath: path,
 								width: width,
@@ -246,6 +251,7 @@ function Settings({
 							onChange={e => {
 								setSettings({
 									branch: settings.branch,
+									version: settings.version,
 									jarPath: settings.jarPath,
 									minecraftPath: path,
 									width: width,

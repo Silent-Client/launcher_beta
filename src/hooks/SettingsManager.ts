@@ -14,6 +14,7 @@ export function getSettings() {
 		return {
 			memory: 2,
 			branch: "stable",
+			version: "1.8",
 			jarPath: null,
 			minecraftPath: "",
 			width: 1280,

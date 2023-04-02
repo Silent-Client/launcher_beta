@@ -49,13 +49,15 @@ import steve from "../images/steve.png";
 import News from "../types/News";
 import { isAdmin, isBanned, isPlus } from "../utils/userUtils";
 
-function Play({ news }: { news: News[] }) {
+function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	let ipcRenderer: any = null;
 	try {
 		ipcRenderer = window.require("electron").ipcRenderer;
 	} catch (error) {
 		console.error(error);
 	}
+	type versionType = "1.8" | "1.12";
+	const versions: versionType[] = ["1.8", "1.12"];
 
 	moment.locale(i18n.language === "ru" ? "ru" : "en");
 
@@ -67,6 +69,9 @@ function Play({ news }: { news: News[] }) {
 	);
 	const [test, setTest] = useState<boolean>(
 		SettingsManager.getSettings().branch === "test"
+	);
+	const [version, setVersion] = useState<"1.8" | "1.12">(
+		SettingsManager.getSettings().version || "1.8"
 	);
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -84,6 +89,7 @@ function Play({ news }: { news: News[] }) {
 			SettingsManager.setSettings({
 				memory: SettingsManager.getSettings().memory,
 				branch: SettingsManager.getSettings().branch,
+				version: SettingsManager.getSettings().version,
 				jarPath: message.path,
 				minecraftPath: SettingsManager.getSettings().minecraftPath,
 				width: SettingsManager.getSettings().width,
@@ -96,6 +102,18 @@ function Play({ news }: { news: News[] }) {
 	);
 
 	useEffect(() => {
+		SettingsManager.setSettings({
+			memory: SettingsManager.getSettings().memory,
+			branch: SettingsManager.getSettings().branch,
+			version: version,
+			jarPath: SettingsManager.getSettings().jarPath,
+			minecraftPath: SettingsManager.getSettings().minecraftPath,
+			width: SettingsManager.getSettings().width,
+			height: SettingsManager.getSettings().height,
+			discord: SettingsManager.getSettings().discord,
+			afterLaunch: SettingsManager.getSettings().afterLaunch,
+			preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
+		});
 		if (
 			(SettingsManager.getSettings().branch === "experimental" && !isPlus()) ||
 			(SettingsManager.getSettings().branch === "test" && !isAdmin())
@@ -105,6 +123,7 @@ function Play({ news }: { news: News[] }) {
 			SettingsManager.setSettings({
 				memory: SettingsManager.getSettings().memory,
 				branch: "stable",
+				version: SettingsManager.getSettings().version,
 				jarPath: SettingsManager.getSettings().jarPath,
 				minecraftPath: SettingsManager.getSettings().minecraftPath,
 				width: SettingsManager.getSettings().width,
@@ -201,6 +220,66 @@ function Play({ news }: { news: News[] }) {
 					<Center p={2}>
 						<Heading size="md">{t("launch.header")}</Heading>
 					</Center>
+					{versionIndex > 4 && isAdmin() && (
+						<Stack direction={"row"} w="full" justifyContent={"space-between"}>
+							<Center h="full">
+								<Text fontSize={"lg"} fontWeight={"bold"}>
+									{t("launch.mcVersion")}:
+								</Text>
+							</Center>
+							<Menu>
+								<MenuButton
+									as={Button}
+									size="sm"
+									minW={i18n.language === "ru" ? "146px" : "123.27px"}
+									maxW={i18n.language === "ru" ? "146px" : "123.27px"}
+									rightIcon={<ChevronDownIcon />}
+									textAlign="left"
+								>
+									<Text maxW="90px" overflow={"hidden"} textOverflow="ellipsis">
+										{version}
+									</Text>
+								</MenuButton>
+
+								<MenuList bgColor="black">
+									{versions.map(v => {
+										if (version === v) {
+											return null;
+										}
+
+										return (
+											<MenuItem
+												as={Button}
+												borderRadius={0}
+												justifyContent="start"
+												bgColor="black"
+												onClick={() => {
+													setVersion(v);
+													SettingsManager.setSettings({
+														memory: SettingsManager.getSettings().memory,
+														branch: SettingsManager.getSettings().branch,
+														version: v,
+														jarPath: SettingsManager.getSettings().jarPath,
+														minecraftPath:
+															SettingsManager.getSettings().minecraftPath,
+														width: SettingsManager.getSettings().width,
+														height: SettingsManager.getSettings().height,
+														discord: SettingsManager.getSettings().discord,
+														afterLaunch:
+															SettingsManager.getSettings().afterLaunch,
+														preLoadCosmetics:
+															SettingsManager.getSettings().preLoadCosmetics,
+													});
+												}}
+											>
+												{v}
+											</MenuItem>
+										);
+									})}
+								</MenuList>
+							</Menu>
+						</Stack>
+					)}
 					<Stack spacing={5} direction={"row"} justifyContent="space-between">
 						<Stack w="full" direction={"row"} justifyContent="space-between">
 							<Center h="full">
@@ -221,6 +300,7 @@ function Play({ news }: { news: News[] }) {
 									SettingsManager.setSettings({
 										memory: SettingsManager.getSettings().memory,
 										branch: !beta ? "experimental" : "stable",
+										version: SettingsManager.getSettings().version,
 										jarPath: SettingsManager.getSettings().jarPath,
 										minecraftPath: SettingsManager.getSettings().minecraftPath,
 										width: SettingsManager.getSettings().width,
@@ -276,6 +356,7 @@ function Play({ news }: { news: News[] }) {
 										SettingsManager.setSettings({
 											memory: SettingsManager.getSettings().memory,
 											branch: !test ? "test" : "stable",
+											version: SettingsManager.getSettings().version,
 											jarPath: SettingsManager.getSettings().jarPath,
 											minecraftPath:
 												SettingsManager.getSettings().minecraftPath,
@@ -311,6 +392,8 @@ function Play({ news }: { news: News[] }) {
 							<MenuButton
 								as={Button}
 								size="sm"
+								minW={i18n.language === "ru" ? "146px" : "123.27px"}
+								maxW={i18n.language === "ru" ? "146px" : "123.27px"}
 								leftIcon={
 									<Image
 										w="20px"
@@ -336,6 +419,8 @@ function Play({ news }: { news: News[] }) {
 									justifyContent="start"
 									bgColor="black"
 									leftIcon={<EditIcon />}
+									minW={i18n.language === "ru" ? "146px" : "123.27px"}
+									maxW={i18n.language === "ru" ? "146px" : "123.27px"}
 									onClick={() => {
 										window
 											.require("electron")
