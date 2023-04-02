@@ -38,14 +38,14 @@ function Footer({ versionIndex }: { versionIndex: number }) {
 					_hover={{
 						color: "white",
 						textDecoration: "none",
-						opacity: isLoading || versionIndex < 4 ? "0.4" : "0.8",
+						opacity: isLoading || !(versionIndex > 3) ? "0.4" : "0.8",
 					}}
 					_active={{
 						color: "white",
-						opacity: isLoading || versionIndex < 4 ? "0.4" : "0.8",
+						opacity: isLoading || !(versionIndex > 3) ? "0.4" : "0.8",
 					}}
 					variant="link"
-					isDisabled={isLoading || versionIndex < 4}
+					isDisabled={isLoading || !(versionIndex > 3)}
 					onClick={async () => {
 						if (versionIndex > 3) {
 							setIsLoading(true);
