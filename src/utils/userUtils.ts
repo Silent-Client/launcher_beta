@@ -1,5 +1,9 @@
 import { getUser } from "../hooks/AuthManager";
 
+export function isPartner() {
+	return getUser()?.is_partner === 1;
+}
+
 export function isPlus() {
 	return (
 		getUser()?.is_plus === 1 ||

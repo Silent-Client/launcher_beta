@@ -47,7 +47,7 @@ import plus_being from "../images/plus_being.png";
 import plus_promo from "../images/plus_promo.png";
 import steve from "../images/steve.png";
 import News from "../types/News";
-import { isAdmin, isBanned, isPlus } from "../utils/userUtils";
+import { isAdmin, isBanned, isPartner, isPlus } from "../utils/userUtils";
 
 function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	let ipcRenderer: any = null;
@@ -220,7 +220,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 					<Center p={2}>
 						<Heading size="md">{t("launch.header")}</Heading>
 					</Center>
-					{versionIndex > 4 && isAdmin() && (
+					{versionIndex > 4 && (isAdmin() || isPartner()) && (
 						<Stack direction={"row"} w="full" justifyContent={"space-between"}>
 							<Center h="full">
 								<Text fontSize={"lg"} fontWeight={"bold"}>
