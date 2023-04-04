@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { login, tryLogin } from "../hooks/AuthManager";
 
-function Login() {
+function LoginOld() {
 	const { t, i18n } = useTranslation();
 
 	let ipcRenderer: any = null;
@@ -31,49 +31,7 @@ function Login() {
 	const [scEmail, setScEmail] = React.useState("");
 	const [scPassword, setScPassword] = React.useState("");
 	const [auth, setAuth] = React.useState(false);
-
-	ipcRenderer?.on(
-		"auth/setToken",
-		async function (evt: any, { token }: { token: string }) {
-			setIsLoading(true);
-			try {
-				const res = await login(scEmail, scPassword, token);
-
-				if (res.errors) {
-					for (const err of res.errors) {
-						toast({
-							title: t("login.errors.title"),
-							description: t(`login.errors.${err.message}`),
-							status: "error",
-							duration: 3000,
-							isClosable: true,
-						});
-					}
-					setScEmail("");
-					setScPassword("");
-					const language = i18n.language;
-					ipcRenderer?.send("app/clearcookie");
-					i18n.changeLanguage(language);
-					setAuth(false);
-					return;
-				}
-
-				window.location.reload();
-			} catch (error: any) {
-				toast({
-					title: t("login.errors.title"),
-					description: error?.message
-						? t(`login.errors.${error.message}`)
-						: `${error}`,
-					status: "error",
-					duration: 3000,
-					isClosable: true,
-				});
-			} finally {
-				setIsLoading(false);
-			}
-		}
-	);
+	const [mcToken, setMcToken] = React.useState("");
 
 	const {
 		register,
@@ -185,19 +143,74 @@ function Login() {
 						<Center>
 							<Heading>{t("login.minecraft.header")}</Heading>
 						</Center>
+						<FormControl>
+							<FormLabel>{t("login.minecraft.token")}</FormLabel>
+							<Input
+								onChange={e => {
+									setMcToken(e.currentTarget.value);
+								}}
+								isDisabled={isLoading}
+							/>
+						</FormControl>
+
 						<Button
-							onClick={() =>
-								window.open(
-									"https://login.live.com/oauth20_authorize.srf?client_id=b134f19c-06ef-418c-b87d-a58073f65a64&response_type=code&redirect_uri=https://auth.silentclient.net/auth&scope=XboxLive.signin%20offline_access&state=NOT_NEEDED"
-								)
-							}
-							colorScheme={"whatsapp"}
+							onClick={async () => {
+								setIsLoading(true);
+								try {
+									const res = await login(scEmail, scPassword, mcToken);
+
+									if (res.errors) {
+										for (const err of res.errors) {
+											toast({
+												title: t("login.errors.title"),
+												description: t(`login.errors.${err.message}`),
+												status: "error",
+												duration: 3000,
+												isClosable: true,
+											});
+										}
+										setScEmail("");
+										setScPassword("");
+										setMcToken("");
+										const language = i18n.language;
+										ipcRenderer?.send("app/clearcookie");
+										i18n.changeLanguage(language);
+										setAuth(false);
+										return;
+									}
+
+									window.location.reload();
+								} catch (error: any) {
+									toast({
+										title: t("login.errors.title"),
+										description: error?.message
+											? t(`login.errors.${error.message}`)
+											: `${error}`,
+										status: "error",
+										duration: 3000,
+										isClosable: true,
+									});
+								} finally {
+									setIsLoading(false);
+								}
+							}}
+							w="full"
+							type="submit"
 							isDisabled={isLoading}
 						>
-							{t("login.minecraft.microsoft")}
+							{t("login.minecraft.login")}
 						</Button>
-						<Button
-							isDisabled={isLoading}
+
+						<Link
+							onClick={() => {
+								window.open(
+									"https://login.live.com/oauth20_authorize.srf?client_id=b134f19c-06ef-418c-b87d-a58073f65a64&response_type=code&redirect_uri=https://auth.silentclient.net/auth&scope=XboxLive.signin%20offline_access&state=NOT_NEEDED"
+								);
+							}}
+						>
+							{t("login.minecraft.get_token")}
+						</Link>
+						<Link
 							onClick={async () => {
 								setIsLoading(true);
 								try {
@@ -215,6 +228,7 @@ function Login() {
 										}
 										setScEmail("");
 										setScPassword("");
+										setMcToken("");
 										const language = i18n.language;
 										ipcRenderer?.send("app/clearcookie");
 										i18n.changeLanguage(language);
@@ -239,7 +253,7 @@ function Login() {
 							}}
 						>
 							{t("login.minecraft.cracked")}
-						</Button>
+						</Link>
 					</Stack>
 				)}
 			</Center>
@@ -259,4 +273,4 @@ function Login() {
 	);
 }
 
-export default Login;
+export default LoginOld;

@@ -18,7 +18,8 @@
 			"token": "Token",
 			"login": "Login",
 			"get_token": "Get token",
-			"cracked": "Use Cracked Account"
+			"cracked": "Use Cracked Account",
+			"microsoft": "Sign in with Microsoft"
 		},
 		"errors": {
 			"title": "Error",
