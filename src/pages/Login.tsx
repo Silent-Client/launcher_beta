@@ -35,6 +35,9 @@ function Login() {
 	ipcRenderer?.on(
 		"auth/setToken",
 		async function (evt: any, { token }: { token: string }) {
+			if (scEmail.trim() === "" || scPassword.trim() === "") {
+				return;
+			}
 			setIsLoading(true);
 			try {
 				const res = await login(scEmail, scPassword, token);
