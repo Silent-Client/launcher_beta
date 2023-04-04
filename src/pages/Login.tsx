@@ -186,11 +186,7 @@ function Login() {
 							<Heading>{t("login.minecraft.header")}</Heading>
 						</Center>
 						<Button
-							onClick={() =>
-								window.open(
-									"https://login.live.com/oauth20_authorize.srf?client_id=b134f19c-06ef-418c-b87d-a58073f65a64&response_type=code&redirect_uri=https://auth.silentclient.net/auth&scope=XboxLive.signin%20offline_access&state=NOT_NEEDED"
-								)
-							}
+							onClick={() => ipcRenderer.send("app/getAuthToken")}
 							colorScheme={"whatsapp"}
 							isDisabled={isLoading}
 						>
