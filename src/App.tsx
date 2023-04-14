@@ -1,6 +1,5 @@
-import { Alert, AlertIcon, Box, Center, Image, Stack } from "@chakra-ui/react";
+import { Box, Center, Image, Stack } from "@chakra-ui/react";
 import axios from "axios";
-import i18next from "i18next";
 import { useEffect, useState } from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer";
@@ -139,12 +138,7 @@ function App() {
 							>
 								<Box>
 									{getUser() && <Header />}
-									<Alert status="warning">
-										<AlertIcon />
-										{i18next.language === "ru"
-											? "В данный момент ведутся тех. работы, которые могут повлиять на работу лаунчера, приносим свои извинения."
-											: "At the moment, those are being carried out. work that may affect the operation of the launcher, we apologize."}
-									</Alert>
+
 									<Box
 										paddingInlineStart={5}
 										paddingInlineEnd={5}
