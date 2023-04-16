@@ -542,7 +542,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 									<Text>{moment(item.created_at).format("LL")}</Text>
 								</Stack>
 								<LazyLoadImage
-									src={`https://image.either.digital/resize?image=https://api.silentclient.net${item.cover}&w=1920&h=1080`}
+									src={`https://image.eitherdigital.ru/resize?image=https://api.silentclient.net${item.cover}&w=1920&h=1080`}
 									effect="blur"
 									width={"760px"}
 									height={"427px"}
