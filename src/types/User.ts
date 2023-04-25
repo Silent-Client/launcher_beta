@@ -9,6 +9,8 @@ export default interface User {
 	is_plus: number;
 	is_tester: number;
 	is_staff: number;
+	is_retired: number;
+	is_dev: number;
 	is_banned: number;
 	custom_skin: number;
 	skin_type: "default" | "slim";
