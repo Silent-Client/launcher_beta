@@ -8,7 +8,6 @@ import { getAuth, getUser } from "./hooks/AuthManager";
 import { getSettings, setSettings } from "./hooks/SettingsManager";
 import full_logo from "./images/full_logo.svg";
 import Login from "./pages/Login";
-import LoginOld from "./pages/LoginOld";
 import NeedElectron from "./pages/NeedElectron";
 import Play from "./pages/Play";
 import Settings from "./pages/Settings";
@@ -163,10 +162,7 @@ function App() {
 											</Routes>
 										)) || (
 											<Routes>
-												<Route
-													path="*"
-													element={versionIndex > 7 ? <Login /> : <LoginOld />}
-												/>
+												<Route path="*" element={<Login />} />
 											</Routes>
 										)}
 									</Box>

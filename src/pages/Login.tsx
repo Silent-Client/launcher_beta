@@ -246,12 +246,10 @@ function Login() {
 				<Box />
 				<Link
 					onClick={() =>
-						i18n.changeLanguage(i18n.language === "en-US" ? "ru" : "en-US")
+						i18n.changeLanguage(i18n.language === "ru" ? "en-US" : "ru")
 					}
 				>
-					{i18n.language === "en-US"
-						? "Перейти на русский язык"
-						: "Switch to English"}
+					{i18n.language === "ru" ? "Switch to English" : "Перейти на русский"}
 				</Link>
 			</Stack>
 		</Box>
