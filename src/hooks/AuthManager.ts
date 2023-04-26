@@ -41,7 +41,7 @@ function getUser() {
 }
 
 async function logout() {
-	Store.clear();
+	Store.removeItem("auth-data");
 	window.location.reload();
 }
 
