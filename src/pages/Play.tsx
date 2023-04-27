@@ -401,7 +401,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 										borderRadius={5}
 										src={`https://mc-heads.net/avatar/${
 											getUser()?.original_username
-										}`}
+										}.png`}
 										fallbackSrc={steve}
 									/>
 								}
