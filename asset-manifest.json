@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.47ac8ef8.css",
-    "main.js": "/static/js/main.36988490.js",
+    "main.js": "/static/js/main.5a2a3c3f.js",
     "static/js/27.83952472.chunk.js": "/static/js/27.83952472.chunk.js",
     "static/media/plus_being.png": "/static/media/plus_being.62d4c499fed1ec384426.png",
     "static/media/plus_promo.png": "/static/media/plus_promo.31c1d7299ddd91975836.png",
@@ -13,6 +13,6 @@
   },
   "entrypoints": [
     "static/css/main.47ac8ef8.css",
-    "static/js/main.36988490.js"
+    "static/js/main.5a2a3c3f.js"
   ]
 }
