@@ -70,9 +70,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	const [test, setTest] = useState<boolean>(
 		SettingsManager.getSettings().branch === "test"
 	);
-	const [version, setVersion] = useState<"1.8" | "1.12">(
-		SettingsManager.getSettings().version || "1.8"
-	);
+	const [version, setVersion] = useState<"1.8" | "1.12">("1.8");
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -220,7 +218,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 					<Center p={2}>
 						<Heading size="md">{t("launch.header")}</Heading>
 					</Center>
-					{versionIndex > 4 && (
+					{/* {versionIndex > 4 && (
 						<Stack direction={"row"} w="full" justifyContent={"space-between"}>
 							<Center h="full">
 								<Text fontSize={"lg"} fontWeight={"bold"}>
@@ -279,7 +277,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 								</MenuList>
 							</Menu>
 						</Stack>
-					)}
+					)} */}
 					<Stack spacing={5} direction={"row"} justifyContent="space-between">
 						<Stack w="full" direction={"row"} justifyContent="space-between">
 							<Center h="full">
