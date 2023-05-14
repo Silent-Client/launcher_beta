@@ -472,7 +472,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 							onClick={() =>
 								window
 									.require("electron")
-									.shell.openExternal("https://store.silentclient.net/plus")
+									.shell.openExternal("https://store.silentclient.net/premium")
 							}
 						>
 							<Image
