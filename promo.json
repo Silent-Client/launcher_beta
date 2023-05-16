@@ -1,0 +1,6 @@
+{
+	"promo": {
+		"image": "https://api.silentclient.net/assets/launcher/premium_promo.png",
+		"redirect": "https://store.silentclient.net/premium"
+	}
+}

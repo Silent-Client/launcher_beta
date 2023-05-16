@@ -31,6 +31,7 @@ import {
 	useDisclosure,
 	useToast,
 } from "@chakra-ui/react";
+import axios from "axios";
 import moment from "moment";
 import "moment/locale/ru";
 import { useEffect, useState } from "react";
@@ -58,6 +59,10 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	}
 	type versionType = "1.8" | "1.12";
 	const versions: versionType[] = ["1.8", "1.12"];
+	const [promo, setPromo] = useState<{
+		image: string;
+		redirect: string;
+	} | null>(null);
 
 	moment.locale(i18n.language === "ru" ? "ru" : "en");
 
@@ -136,6 +141,14 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
 			});
 		}
+		const getData = async () => {
+			const { data: res } = await axios.get(
+				"https://api.silentclient.net/assets/launcher/promo.json"
+			);
+			setPromo(res.promo);
+		};
+
+		getData();
 	}, []);
 
 	const launch = async () => {
@@ -204,10 +217,14 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				padding={5}
 				direction="row"
 				justifyContent={"space-between"}
-				bgImage={panorama}
+				bgImage={promo ? promo.image : panorama}
 				bgRepeat="no-repeat"
 				bgPosition={"center"}
 				bgSize="cover"
+				cursor={promo?.redirect ? "pointer" : "default"}
+				onClick={() =>
+					window.require("electron").shell.openExternal(promo?.redirect)
+				}
 			>
 				<Box />
 				<Stack
