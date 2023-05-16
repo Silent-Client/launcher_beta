@@ -80,6 +80,13 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	});
 
 	ipcRenderer?.on(
+		"launch/status",
+		function (evt: any, message: { status: string }) {
+			setStatus(message.status);
+		}
+	);
+
+	ipcRenderer?.on(
 		"settings/customJar",
 		function (evt: any, message: { path: string }) {
 			SettingsManager.setSettings({
