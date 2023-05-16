@@ -73,13 +73,11 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	const [version, setVersion] = useState<"1.8" | "1.12">("1.8");
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const crashModal = useDisclosure();
 
-	ipcRenderer?.on(
-		"launch/status",
-		function (evt: any, message: { status: string }) {
-			setStatus(message.status);
-		}
-	);
+	ipcRenderer?.on("app/crashReport", function (evt: any) {
+		crashModal.onOpen();
+	});
 
 	ipcRenderer?.on(
 		"settings/customJar",
@@ -281,7 +279,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 					<Stack spacing={5} direction={"row"} justifyContent="space-between">
 						<Stack w="full" direction={"row"} justifyContent="space-between">
 							<Center h="full">
-								<Text color="#3bbe54" fontSize={"lg"} fontWeight={"bold"}>
+								<Text color="#ffe600" fontSize={"lg"} fontWeight={"bold"}>
 									{t("launch.beta")}:
 								</Text>
 							</Center>
@@ -309,7 +307,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 											SettingsManager.getSettings().preLoadCosmetics,
 									});
 								}}
-								colorScheme={"green"}
+								colorScheme={"yellow"}
 								size={"lg"}
 								id="beta"
 							/>
@@ -494,6 +492,24 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 					</ModalBody>
 				</ModalContent>
 			</Modal>
+			<Modal isOpen={crashModal.isOpen} onClose={crashModal.onClose}>
+				<ModalOverlay />
+				<ModalContent bgColor={"rgb(19, 19, 19)"}>
+					<ModalHeader w="full" textAlign={"center"}>
+						{t("crash_modal.title")}
+					</ModalHeader>
+					<ModalBody>
+						<Text textAlign={"center"} fontSize={"lg"}>
+							{t("crash_modal.description")}
+						</Text>
+					</ModalBody>
+					<ModalFooter>
+						<Button w="full" onClick={crashModal.onClose}>
+							{t("crash_modal.button")}
+						</Button>
+					</ModalFooter>
+				</ModalContent>
+			</Modal>
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent bgColor={"rgb(19, 19, 19)"}>
@@ -511,7 +527,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 							onClick={() =>
 								window
 									.require("electron")
-									.shell.openExternal("https://store.silentclient.net/plus")
+									.shell.openExternal("https://store.silentclient.net/premium")
 							}
 						>
 							{t("only_plus_modal.buy")}
@@ -519,8 +535,8 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 					</ModalFooter>
 				</ModalContent>
 			</Modal>
-			<Stack mt={5} direction={"row"} spacing={10}>
-				<Box id="news" minW="800px" maxW="500px">
+			<Stack mt={5} direction={["column", "row"]} spacing={10}>
+				<Box id="news" minW="65%">
 					<Center>
 						<Heading size={"lg"}>{t("news.title")}</Heading>
 					</Center>
@@ -539,13 +555,15 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 									<Heading size="lg">{item.title}</Heading>
 									<Text>{moment(item.created_at).format("LL")}</Text>
 								</Stack>
-								<LazyLoadImage
-									src={`https://image.eitherdigital.ru/resize?image=https://api.silentclient.net${item.cover}&w=1920&h=1080`}
-									effect="blur"
-									width={"760px"}
-									height={"427px"}
-									style={{ borderRadius: "var(--silentclient-radii-lg)" }}
-								/>
+								<Box minH="427px">
+									<LazyLoadImage
+										src={`https://image.eitherdigital.ru/resize?image=https://api.silentclient.net${item.cover}&w=1920&h=1080`}
+										effect="blur"
+										width={"100%"}
+										height={"auto"}
+										style={{ borderRadius: "var(--silentclient-radii-lg)" }}
+									/>
+								</Box>
 								<Button
 									onClick={() =>
 										window
@@ -577,7 +595,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 							p={5}
 						>
 							<IconButton
-								w="104px"
+								w="full"
 								h="104px"
 								aria-label="Telegram"
 								icon={<FaTelegramPlane size={70} />}
@@ -591,7 +609,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 								}
 							/>
 							<IconButton
-								w="104px"
+								w="full"
 								h="104px"
 								aria-label="Discord"
 								icon={<FaDiscord size={70} />}
@@ -605,7 +623,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 								}
 							/>
 							<IconButton
-								w="104px"
+								w="full"
 								h="104px"
 								aria-label="VK"
 								icon={<FaVk size={70} />}
