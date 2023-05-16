@@ -221,12 +221,14 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				bgRepeat="no-repeat"
 				bgPosition={"center"}
 				bgSize="cover"
-				cursor={promo?.redirect ? "pointer" : "default"}
-				onClick={() =>
-					window.require("electron").shell.openExternal(promo?.redirect)
-				}
 			>
-				<Box />
+				<Box
+					w="full"
+					cursor={promo?.redirect ? "pointer" : "default"}
+					onClick={() =>
+						window.require("electron").shell.openExternal(promo?.redirect)
+					}
+				/>
 				<Stack
 					bgColor={"rgb(19, 19, 19)"}
 					boxShadow="rgba(0, 0, 0, 0.1) 0px 15px 9px 0px"
