@@ -12,7 +12,7 @@ export async function getVersionIndex() {
 		"https://api.github.com/repos/Silent-Client/launcher-releases/releases"
 	);
 
-	if (isDebug()) {
+	if (isDebug() || version().startsWith("2.0.0-alpha")) {
 		return indexes.length + 1;
 	}
 
