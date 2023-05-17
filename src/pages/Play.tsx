@@ -39,7 +39,7 @@ import { useTranslation } from "react-i18next";
 import { FaDiscord, FaTelegramPlane, FaVk } from "react-icons/fa";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { Link as RLink } from "react-router-dom";
+import { Link as RLink, useNavigate } from "react-router-dom";
 import { getUser, logout, updateAuth } from "../hooks/AuthManager";
 import * as SettingsManager from "../hooks/SettingsManager";
 import i18n from "../i18n";
@@ -151,11 +151,17 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 		getData();
 	}, []);
 
+	const navigate = useNavigate();
+
 	const launch = async () => {
 		setIsLoading(true);
 		try {
 			setStatus("Refreshing authorization");
-			await updateAuth();
+			const auth = await updateAuth();
+			if (auth.error === 1) {
+				navigate(`/change_username/${auth.username}`);
+				return;
+			}
 			if (isBanned()) {
 				toast({
 					title: t("launch.errors.title"),

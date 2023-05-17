@@ -15,6 +15,7 @@ import axios from "axios";
 import FilePicker from "chakra-ui-file-picker";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { SkinViewer } from "skinview3d";
 import { getUser, updateAuth } from "../hooks/AuthManager";
 
@@ -113,6 +114,8 @@ function Skins() {
 		func();
 	}, [enabled]);
 
+	const navigate = useNavigate();
+
 	return (
 		<Container maxW="full" minW="full">
 			<Stack direction={"row"} justifyContent="space-between">
@@ -134,7 +137,11 @@ function Skins() {
 									},
 								}
 							);
-							await updateAuth();
+							const auth = await updateAuth();
+							if (auth.error === 1) {
+								navigate(`/change_username/${auth.username}`);
+								return;
+							}
 						} catch (err: any) {
 							if (
 								err?.response &&
@@ -223,7 +230,11 @@ function Skins() {
 														},
 													}
 												);
-												await updateAuth();
+												const auth = await updateAuth();
+												if (auth.error === 1) {
+													navigate(`/change_username/${auth.username}`);
+													return;
+												}
 											} catch (err: any) {
 												if (
 													err?.response &&

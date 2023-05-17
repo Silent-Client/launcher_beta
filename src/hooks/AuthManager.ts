@@ -1,4 +1,5 @@
 import axios from "axios";
+import { NavigateFunction } from "react-router-dom";
 import User from "../types/User";
 
 const Store = window.localStorage;
@@ -45,14 +46,18 @@ async function logout() {
 	window.location.reload();
 }
 
-async function getAuth() {
+async function getAuth(navigate: NavigateFunction) {
 	const user = getUser();
 
 	if (!user) {
 		return false;
 	}
 
-	await updateAuth();
+	const auth = await updateAuth();
+	if (auth.error === 1) {
+		navigate(`/change_username/${auth.username}`);
+		return;
+	}
 
 	try {
 		const { data: res } = await axios.get(
@@ -211,7 +216,7 @@ async function updateAuth() {
 	const user = getUser();
 	if (!user) {
 		logout();
-		return { error: "not auth" };
+		return { error: 3 };
 	}
 
 	try {
@@ -226,8 +231,12 @@ async function updateAuth() {
 
 		if (res.errors) {
 			logout();
-			return { errors: true };
+			return { error: 2 };
 		}
+		let newUsername = {
+			enabled: false,
+			username: null,
+		};
 		let mc = null;
 		if (user.refresh_token !== null) {
 			mc = await axios.post("https://auth.silentclient.net/refresh", {
@@ -236,26 +245,13 @@ async function updateAuth() {
 
 			if (mc.data?.error) {
 				logout();
-				let error = "";
-				switch (mc.data.error) {
-					default:
-						error = "Unknown error =(";
-						break;
-					case 1:
-						error = "Invalid email or password";
-						break;
-					case 2:
-						error = "Please, off 2FA for login";
-						break;
-				}
-
-				return { errors: [{ message: error }] };
+				return { error: 2 };
 			}
 
 			if (res.account.original_username !== mc.data.name) {
-				logout();
-				return {
-					errors: [{ message: "Username MC and SC account does not match." }],
+				newUsername = {
+					enabled: true,
+					username: mc.data.name,
 				};
 			}
 		}
@@ -283,6 +279,10 @@ async function updateAuth() {
 		};
 
 		setAuth(userData);
+
+		if (newUsername.enabled && newUsername.username) {
+			return { error: 1, username: newUsername.username };
+		}
 
 		return { error: false };
 	} catch {

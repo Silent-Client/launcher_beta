@@ -1,12 +1,13 @@
 import { Box, Center, Image, Stack } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import { getAuth, getUser } from "./hooks/AuthManager";
 import { getSettings, setSettings } from "./hooks/SettingsManager";
 import full_logo from "./images/full_logo.svg";
+import ChangeUsername from "./pages/ChangeUsername";
 import Login from "./pages/Login";
 import NeedElectron from "./pages/NeedElectron";
 import Play from "./pages/Play";
@@ -21,6 +22,7 @@ function App() {
 	const [versionIndex, setVersionIndex] = useState<number>(16);
 	const [needElectron, setNeedElectron] = useState<boolean>(false);
 	const [news, setNews] = useState<News[]>([]);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		const getData = async () => {
@@ -37,7 +39,7 @@ function App() {
 				const versionIndex = await getVersionIndex();
 				setVersionIndex(versionIndex);
 
-				await getAuth();
+				await getAuth(navigate);
 
 				const { data: news } = await axios.get(
 					"https://api.silentclient.net/_next/get_news"
@@ -119,7 +121,7 @@ function App() {
 	}, []);
 
 	return (
-		<HashRouter>
+		<>
 			{(isLoading && (
 				<Box h="100vh">
 					<Center h="full">
@@ -159,6 +161,10 @@ function App() {
 													}
 												/>
 												<Route path="/skins" element={<Skins />} />
+												<Route
+													path="/change_username/:username"
+													element={<ChangeUsername />}
+												/>
 											</Routes>
 										)) || (
 											<Routes>
@@ -173,7 +179,7 @@ function App() {
 					)}
 				</Box>
 			)}
-		</HashRouter>
+		</>
 	);
 }
 
