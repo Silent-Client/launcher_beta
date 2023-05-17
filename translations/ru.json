@@ -103,5 +103,11 @@
 		"errors": {
 			"title": "Ошибка"
 		}
+	},
+	"change_username": {
+		"title": "На вашем Minecraft аккаунте изменился никнейм",
+		"description": "Для запуска Silent Client нужно чтобы никнейм Minecraft аккаунта и никнейм Silent Client аккаунта совпадали.",
+		"change": "Сменить никнейм на Silent Client аккаунте",
+		"logout": "Выйти из аккаунта"
 	}
 }

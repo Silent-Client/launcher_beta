@@ -103,5 +103,11 @@
 		"errors": {
 			"title": "Error"
 		}
+	},
+	"change_username": {
+		"title": "Username changed on your Minecraft account",
+		"description": "To run Silent Client, you need to have a Minecraft account username and a Silent Client username.",
+		"change": "Change username on Silent Client account",
+		"logout": "Logout"
 	}
 }
