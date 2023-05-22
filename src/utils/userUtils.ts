@@ -20,7 +20,8 @@ export function isAdmin() {
 	return (
 		getUser()?.is_admin === 1 ||
 		getUser()?.is_staff === 1 ||
-		getUser()?.is_tester === 1
+		getUser()?.is_tester === 1 ||
+		getUser()?.is_dev
 	);
 }
 
