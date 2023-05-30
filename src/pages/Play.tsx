@@ -36,7 +36,14 @@ import moment from "moment";
 import "moment/locale/ru";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaDiscord, FaTelegramPlane, FaVk } from "react-icons/fa";
+import {
+	FaDiscord,
+	FaTelegramPlane,
+	FaTiktok,
+	FaTwitter,
+	FaVk,
+	FaYoutube,
+} from "react-icons/fa";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { Link as RLink, useNavigate } from "react-router-dom";
@@ -628,7 +635,21 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 						>
 							<IconButton
 								w="full"
-								h="104px"
+								h="108px"
+								aria-label="Discord"
+								icon={<FaDiscord size={70} />}
+								_hover={{
+									bgColor: "#7289da",
+								}}
+								onClick={() =>
+									window
+										.require("electron")
+										.shell.openExternal("https://dsc.gg/silentclient")
+								}
+							/>
+							<IconButton
+								w="full"
+								h="108px"
 								aria-label="Telegram"
 								icon={<FaTelegramPlane size={70} />}
 								_hover={{
@@ -642,21 +663,53 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 							/>
 							<IconButton
 								w="full"
-								h="104px"
-								aria-label="Discord"
-								icon={<FaDiscord size={70} />}
+								h="108px"
+								aria-label="Twitter"
+								icon={<FaTwitter size={70} />}
 								_hover={{
-									bgColor: "#7289da",
+									bgColor: "#1DA1F2",
 								}}
 								onClick={() =>
 									window
 										.require("electron")
-										.shell.openExternal("https://discord.gg/eaZYXEBRaE")
+										.shell.openExternal("https://twitter.com/@SilentClientMC")
 								}
 							/>
 							<IconButton
 								w="full"
-								h="104px"
+								h="108px"
+								aria-label="YouTube"
+								icon={<FaYoutube size={70} />}
+								_hover={{
+									bgColor: "#FF0000",
+								}}
+								onClick={() =>
+									window
+										.require("electron")
+										.shell.openExternal(
+											"https://www.youtube.com/@SilentClientMC"
+										)
+								}
+							/>
+							<IconButton
+								w="full"
+								h="108px"
+								aria-label="TikTok"
+								icon={<FaTiktok size={70} />}
+								_hover={{
+									bgColor: "#ff0050",
+								}}
+								onClick={() =>
+									window
+										.require("electron")
+										.shell.openExternal(
+											"https://www.tiktok.com/@SilentClientMC"
+										)
+								}
+							/>
+							<IconButton
+								w="full"
+								h="108px"
 								aria-label="VK"
 								icon={<FaVk size={70} />}
 								_hover={{
