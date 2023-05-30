@@ -26,6 +26,7 @@ function setAuth(user: User) {
 			clientToken: user.clientToken,
 			refresh_token: user.refresh_token,
 			uuid: user.uuid,
+			is_manager: user.is_manager,
 		})
 	);
 }
@@ -142,6 +143,7 @@ async function login(
 			is_dev: user.account.is_dev,
 			custom_skin: user.account.custom_skin,
 			skin_type: user.account.skin_type,
+			is_manager: user.account.is_manager,
 			mcAccessToken: null,
 			clientToken: null,
 			refresh_token: null,
@@ -196,6 +198,7 @@ async function login(
 					is_dev: user.account.is_dev,
 					custom_skin: user.account.custom_skin,
 					skin_type: user.account.skin_type,
+					is_manager: user.account.is_manager,
 					mcAccessToken: mc.access_token,
 					clientToken: mc.client_token,
 					refresh_token: mc.refresh_token,
@@ -270,6 +273,7 @@ async function updateAuth() {
 			is_plus: res.account.is_plus,
 			is_retired: res.account.is_retired,
 			is_dev: res.account.is_dev,
+			is_manager: res.account.is_manager,
 			custom_skin: res.account.custom_skin,
 			skin_type: res.account.skin_type,
 			mcAccessToken: mc?.data.access_token || null,

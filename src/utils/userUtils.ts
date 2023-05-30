@@ -12,7 +12,8 @@ export function isPlus() {
 		getUser()?.is_tester === 1 ||
 		getUser()?.is_partner === 1 ||
 		getUser()?.is_retired === 1 ||
-		getUser()?.is_dev === 1
+		getUser()?.is_dev === 1 ||
+		getUser()?.is_manager === 1
 	);
 }
 
@@ -21,7 +22,8 @@ export function isAdmin() {
 		getUser()?.is_admin === 1 ||
 		getUser()?.is_staff === 1 ||
 		getUser()?.is_tester === 1 ||
-		getUser()?.is_dev
+		getUser()?.is_dev === 1 ||
+		getUser()?.is_manager === 1
 	);
 }
 

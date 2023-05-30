@@ -18,4 +18,5 @@ export default interface User {
 	clientToken: string | null;
 	refresh_token: string | null;
 	uuid: string | null;
+	is_manager: number;
 }
