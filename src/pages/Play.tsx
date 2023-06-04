@@ -194,6 +194,14 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				});
 				return;
 			}
+			try {
+				setStatus("Connecting to servers");
+				await axios.post("https://api.silentclient.net/stats/launch", null, {
+					headers: {
+						Authorization: `Bearer ${getUser()?.accessToken}`,
+					},
+				});
+			} catch {}
 			const launch = await ipcRenderer.invoke("app/launch", {
 				account: getUser(),
 				settings: SettingsManager.getSettings(),
