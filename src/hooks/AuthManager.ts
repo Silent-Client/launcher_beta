@@ -4,46 +4,84 @@ import User from "../types/User";
 
 const Store = window.localStorage;
 
-function setAuth(user: User) {
-	Store.setItem(
-		"auth-data",
-		JSON.stringify({
-			id: user.id,
-			accessToken: user.accessToken,
-			email: user.email,
-			username: user.username,
-			original_username: user.original_username,
-			is_admin: user.is_admin,
-			is_staff: user.is_staff,
-			is_tester: user.is_tester,
-			is_partner: user.is_partner,
-			is_plus: user.is_plus,
-			is_retired: user.is_retired,
-			is_dev: user.is_dev,
-			custom_skin: user.custom_skin,
-			skin_type: user.skin_type,
-			mcAccessToken: user.mcAccessToken,
-			clientToken: user.clientToken,
-			refresh_token: user.refresh_token,
-			uuid: user.uuid,
-			is_manager: user.is_manager,
-		})
-	);
+function setAuth(user: User, init?: boolean) {
+	const newUsers = [];
+	let index = 0;
+	let userIndex = 0;
+
+	for (const oldUser of getUsers()) {
+		if (oldUser.id !== user.id) {
+			newUsers.push(oldUser);
+		} else {
+			newUsers.push(user);
+			userIndex = index;
+		}
+		index++;
+	}
+
+	if (!newUsers.find(u => u.id === user.id)) {
+		newUsers.push(user);
+		userIndex += 1;
+	}
+
+	Store.setItem("auth-data", JSON.stringify(newUsers));
+	if (!init) {
+		setSelectedUser(userIndex);
+	}
 }
 
-function getUser() {
+async function removeUser(id: number) {
+	const newUsers = [];
+
+	for (const oldUser of getUsers()) {
+		if (oldUser.id !== id) {
+			newUsers.push(oldUser);
+		}
+	}
+
+	await Store.setItem("auth-data", JSON.stringify(newUsers));
+
+	if (getSelectedUser() > newUsers.length - 1) {
+		await setSelectedUser(0);
+	}
+}
+
+async function setSelectedUser(index: number) {
+	await Store.setItem("selected-auth", index.toString());
+}
+
+function getSelectedUser() {
+	const data = Store.getItem("selected-auth");
+
+	return data ? Number(data) : 0;
+}
+
+function getUsers() {
 	const data = Store.getItem("auth-data");
 
 	if (!data) {
-		return null;
+		return [];
 	} else {
-		let userData: User = JSON.parse(data);
-		return userData;
+		let userData: User[] = JSON.parse(data);
+
+		return Array.isArray(userData) ? userData : [];
 	}
+}
+
+function getUser() {
+	const data = getUsers();
+	const selected = Store.getItem("selected-auth");
+
+	if (data.length === 0) {
+		return null;
+	}
+
+	return data[selected ? Number(selected) : 0];
 }
 
 async function logout() {
 	Store.removeItem("auth-data");
+	Store.removeItem("selected-auth");
 	window.location.reload();
 }
 
@@ -211,7 +249,16 @@ async function login(
 
 		return { errors: null };
 	} catch (e: any) {
-		return { errors: e.response.data.errors };
+		if (e?.response?.data?.errors) {
+			return { errors: e?.response?.data?.errors };
+		}
+		return {
+			errors: [
+				{
+					message: e,
+				},
+			],
+		};
 	}
 }
 
@@ -282,7 +329,7 @@ async function updateAuth() {
 			uuid: mc?.data.id || null,
 		};
 
-		setAuth(userData);
+		setAuth(userData, true);
 
 		if (newUsername.enabled && newUsername.username) {
 			return { error: 1, username: newUsername.username };
@@ -295,4 +342,16 @@ async function updateAuth() {
 	}
 }
 
-export { getAuth, getUser, setAuth, logout, login, updateAuth, tryLogin };
+export {
+	getAuth,
+	getUser,
+	setAuth,
+	logout,
+	login,
+	updateAuth,
+	tryLogin,
+	setSelectedUser,
+	getUsers,
+	removeUser,
+	getSelectedUser,
+};

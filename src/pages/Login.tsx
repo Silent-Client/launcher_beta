@@ -14,7 +14,12 @@ import {
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { login, tryLogin } from "../hooks/AuthManager";
+import {
+	getSelectedUser,
+	getUsers,
+	login,
+	tryLogin,
+} from "../hooks/AuthManager";
 
 function Login() {
 	const { t, i18n } = useTranslation();
@@ -189,7 +194,18 @@ function Login() {
 							<Heading>{t("login.minecraft.header")}</Heading>
 						</Center>
 						<Button
-							onClick={() => ipcRenderer.send("app/getAuthToken")}
+							onClick={() => {
+								const users = getUsers();
+								const selected = getSelectedUser();
+								const language = i18n.language;
+								ipcRenderer.send("app/getAuthToken");
+								i18n.changeLanguage(language);
+								window.localStorage.setItem("auth-data", JSON.stringify(users));
+								window.localStorage.setItem(
+									"selected-auth",
+									selected.toString()
+								);
+							}}
 							colorScheme={"whatsapp"}
 							isDisabled={isLoading}
 						>
@@ -214,9 +230,19 @@ function Login() {
 										}
 										setScEmail("");
 										setScPassword("");
+										const users = getUsers();
+										const selected = getSelectedUser();
 										const language = i18n.language;
 										ipcRenderer?.send("app/clearcookie");
 										i18n.changeLanguage(language);
+										window.localStorage.setItem(
+											"auth-data",
+											JSON.stringify(users)
+										);
+										window.localStorage.setItem(
+											"selected-auth",
+											selected.toString()
+										);
 										setAuth(false);
 										return;
 									}
