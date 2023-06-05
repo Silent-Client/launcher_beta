@@ -1,4 +1,5 @@
 import {
+	AddIcon,
 	ChevronDownIcon,
 	CloseIcon,
 	EditIcon,
@@ -15,6 +16,7 @@ import {
 	Link,
 	Menu,
 	MenuButton,
+	MenuGroup,
 	MenuItem,
 	MenuList,
 	Modal,
@@ -34,7 +36,7 @@ import {
 import axios from "axios";
 import moment from "moment";
 import "moment/locale/ru";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
 	FaDiscord,
@@ -47,13 +49,18 @@ import {
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { Link as RLink, useNavigate } from "react-router-dom";
-import { getUser, logout, updateAuth } from "../hooks/AuthManager";
+import {
+	logout,
+	refreshAccount,
+	setSelectedAccount,
+} from "../hooks/NewAuthManager";
 import * as SettingsManager from "../hooks/SettingsManager";
 import i18n from "../i18n";
 import panorama from "../images/panorama.webp";
 import plus_being from "../images/plus_being.png";
 import plus_promo from "../images/plus_promo.png";
 import steve from "../images/steve.png";
+import { AppContext } from "../providers/AppContext";
 import News from "../types/News";
 import { isAdmin, isBanned, isPlus } from "../utils/userUtils";
 
@@ -72,7 +79,10 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	} | null>(null);
 
 	moment.locale(i18n.language === "ru" ? "ru" : "en");
-
+	const context = useContext(AppContext);
+	const getUser = () => {
+		return context.props.accounts[context.props.selected_account || 0];
+	};
 	const { t } = useTranslation();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [status, setStatus] = useState<string>("");
@@ -130,8 +140,9 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 			preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
 		});
 		if (
-			(SettingsManager.getSettings().branch === "experimental" && !isPlus()) ||
-			(SettingsManager.getSettings().branch === "test" && !isAdmin())
+			(SettingsManager.getSettings().branch === "experimental" &&
+				!isPlus(context)) ||
+			(SettingsManager.getSettings().branch === "test" && !isAdmin(context))
 		) {
 			setBeta(false);
 			setTest(false);
@@ -164,12 +175,24 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 		setIsLoading(true);
 		try {
 			setStatus("Refreshing authorization");
-			const auth = await updateAuth();
-			if (auth.error === 1) {
-				navigate(`/change_username/${auth.username}`);
-				return;
+			const auth = await refreshAccount({
+				access_token: getUser().accessToken,
+				mc_access_token: getUser().mcAccessToken,
+				mc_refresh_token: getUser().refresh_token,
+			});
+
+			if (auth?.raw && auth.user && context.setProps) {
+				context.setProps({
+					...context.props,
+					accounts: [
+						...context.props.accounts.filter(u => u.id !== auth.user?.id),
+						auth.user,
+					],
+				});
+			} else {
+				window.location.reload();
 			}
-			if (isBanned()) {
+			if (isBanned(context)) {
 				toast({
 					title: t("launch.errors.title"),
 					description: t("launch.errors.banned"),
@@ -333,7 +356,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 							<Switch
 								isChecked={beta}
 								onChange={e => {
-									if (!isPlus()) {
+									if (!isPlus(context)) {
 										onOpen();
 										return;
 									}
@@ -383,7 +406,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 							</Stack>
 						</RLink>
 					</Stack>
-					{isAdmin() && (
+					{isAdmin(context) && (
 						<Stack spacing={5} direction={"row"} justifyContent="space-between">
 							<Stack w="full" direction={"row"} justifyContent="space-between">
 								<Center h="full">
@@ -456,34 +479,87 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 							</MenuButton>
 
 							<MenuList bgColor="black">
-								<MenuItem
-									as={Button}
-									borderRadius={0}
-									justifyContent="start"
-									bgColor="black"
-									leftIcon={<EditIcon />}
-									minW={i18n.language === "ru" ? "146px" : "123.27px"}
-									maxW={i18n.language === "ru" ? "146px" : "123.27px"}
-									onClick={() => {
-										window
-											.require("electron")
-											.shell.openExternal(
-												"https://store.silentclient.net/edit_account"
-											);
-									}}
-								>
-									{t("launch.account.edit")}
-								</MenuItem>
-								<MenuItem
-									as={Button}
-									borderRadius={0}
-									justifyContent="start"
-									bgColor="black"
-									leftIcon={<CloseIcon />}
-									onClick={logout}
-								>
-									{t("launch.account.logout")}
-								</MenuItem>
+								<MenuGroup title="Current account">
+									<MenuItem
+										as={Button}
+										borderRadius={0}
+										justifyContent="start"
+										bgColor="black"
+										leftIcon={<EditIcon />}
+										onClick={() => {
+											window
+												.require("electron")
+												.shell.openExternal(
+													"https://store.silentclient.net/edit_account"
+												);
+										}}
+									>
+										{t("launch.account.edit")}
+									</MenuItem>
+									<MenuItem
+										as={Button}
+										borderRadius={0}
+										justifyContent="start"
+										bgColor="black"
+										leftIcon={<CloseIcon />}
+										onClick={async () => {
+											logout(context);
+										}}
+									>
+										{t("launch.account.logout")}
+									</MenuItem>
+								</MenuGroup>
+								<MenuGroup title="Other accounts">
+									<MenuItem
+										as={Button}
+										borderRadius={0}
+										justifyContent="start"
+										bgColor="black"
+										leftIcon={<AddIcon />}
+										onClick={() => {
+											navigate("/login");
+										}}
+									>
+										Add account
+									</MenuItem>
+									{context.props.accounts.map(
+										(user, key) =>
+											user.id !== getUser().id && (
+												<MenuItem
+													as={Button}
+													borderRadius={0}
+													justifyContent="start"
+													bgColor="black"
+													leftIcon={
+														<Image
+															w="20px"
+															h="20px"
+															borderRadius={5}
+															src={`https://mc-heads.net/avatar/${user.original_username}.png`}
+															fallbackSrc={steve}
+														/>
+													}
+													onClick={async () => {
+														if (context.setProps) {
+															context.setProps({
+																...context.props,
+																selected_account: key,
+															});
+															await setSelectedAccount(key);
+														}
+													}}
+												>
+													<Text
+														maxW="150px"
+														overflow={"hidden"}
+														textOverflow="ellipsis"
+													>
+														{user.original_username}
+													</Text>
+												</MenuItem>
+											)
+									)}
+								</MenuGroup>
 							</MenuList>
 						</Menu>
 					</Stack>
@@ -521,7 +597,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 							}
 						>
 							<Image
-								src={!isPlus() ? plus_promo : plus_being}
+								src={!isPlus(context) ? plus_promo : plus_being}
 								borderRadius={"lg"}
 								w="400px"
 								h="150px"

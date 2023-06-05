@@ -1,32 +1,48 @@
-import { getUser } from "../hooks/AuthManager";
+import { AppContextType } from "../providers/AppContext";
 
-export function isPartner() {
-	return getUser()?.is_partner === 1;
-}
-
-export function isPlus() {
+export function isPartner(context: AppContextType) {
 	return (
-		getUser()?.is_plus === 1 ||
-		getUser()?.is_admin === 1 ||
-		getUser()?.is_staff === 1 ||
-		getUser()?.is_tester === 1 ||
-		getUser()?.is_partner === 1 ||
-		getUser()?.is_retired === 1 ||
-		getUser()?.is_dev === 1 ||
-		getUser()?.is_manager === 1
+		context.props.accounts[context.props.selected_account || 0]?.is_partner ===
+		1
 	);
 }
 
-export function isAdmin() {
+export function isPlus(context: AppContextType) {
 	return (
-		getUser()?.is_admin === 1 ||
-		getUser()?.is_staff === 1 ||
-		getUser()?.is_tester === 1 ||
-		getUser()?.is_dev === 1 ||
-		getUser()?.is_manager === 1
+		context.props.accounts[context.props.selected_account || 0]?.is_plus ===
+			1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_admin ===
+			1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_staff ===
+			1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_tester ===
+			1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_partner ===
+			1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_retired ===
+			1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_dev === 1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_manager ===
+			1
 	);
 }
 
-export function isBanned() {
-	return getUser()?.is_banned === 1;
+export function isAdmin(context: AppContextType) {
+	return (
+		context.props.accounts[context.props.selected_account || 0]?.is_admin ===
+			1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_staff ===
+			1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_tester ===
+			1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_dev === 1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_manager ===
+			1
+	);
+}
+
+export function isBanned(context: AppContextType) {
+	return (
+		context.props.accounts[context.props.selected_account || 0]?.is_banned === 1
+	);
 }

@@ -36,9 +36,7 @@ function Settings({
 	const [width, setWidth] = useState(settings.width);
 	const [height, setHeight] = useState(settings.height);
 	const [discord, setDiscord] = useState(settings.discord);
-	const [preLoadCosmetics, setPreLoadCosmetics] = useState(
-		settings.preLoadCosmetics
-	);
+	const [preLoadCosmetics, setPreLoadCosmetics] = useState(false);
 	const [path, setPath] = useState(settings.minecraftPath);
 
 	const [showTooltip, setShowTooltip] = useState(false);
@@ -233,39 +231,6 @@ function Settings({
 							: "Перейти на русский"}
 					</Link>
 				</Stack>
-				{versionIndex > 2 && (
-					<Stack
-						direction={"row"}
-						justifyContent="space-between"
-						w="full"
-						spacing={1}
-					>
-						<Tooltip label={t("settings.preLoadCosmetics.tooltip")}>
-							<Heading size={"sm"}>
-								{t("settings.preLoadCosmetics.title")}
-							</Heading>
-						</Tooltip>
-						<Switch
-							colorScheme={"green"}
-							isChecked={preLoadCosmetics}
-							onChange={e => {
-								setSettings({
-									branch: settings.branch,
-									version: settings.version,
-									jarPath: settings.jarPath,
-									minecraftPath: path,
-									width: width,
-									height: height,
-									memory: memory,
-									discord: discord,
-									afterLaunch: "hide",
-									preLoadCosmetics: !preLoadCosmetics,
-								});
-								setPreLoadCosmetics(!preLoadCosmetics);
-							}}
-						/>
-					</Stack>
-				)}
 			</Stack>
 		</Container>
 	);

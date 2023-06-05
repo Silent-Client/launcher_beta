@@ -13,13 +13,19 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import FilePicker from "chakra-ui-file-picker";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { SkinViewer } from "skinview3d";
-import { getUser, updateAuth } from "../hooks/AuthManager";
+import { refreshAccount } from "../hooks/NewAuthManager";
+import { AppContext } from "../providers/AppContext";
 
 function Skins() {
+	const context = useContext(AppContext);
+	const getUser = () => {
+		console.log(context.props.accounts[context.props.selected_account || 0]);
+		return context.props.accounts[context.props.selected_account || 0];
+	};
 	const [enabled, setEnabled] = useState<boolean>(getUser()?.custom_skin === 1);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [texture, setTexture] = useState<File | null>(null);
@@ -137,10 +143,24 @@ function Skins() {
 									},
 								}
 							);
-							const auth = await updateAuth();
-							if (auth.error === 1) {
-								navigate(`/change_username/${auth.username}`);
-								return;
+							const auth = await refreshAccount({
+								access_token: getUser().accessToken,
+								mc_access_token: getUser().mcAccessToken,
+								mc_refresh_token: getUser().refresh_token,
+							});
+
+							if (auth?.raw && auth.user && context.setProps) {
+								context.setProps({
+									...context.props,
+									accounts: [
+										...context.props.accounts.filter(
+											u => u.id !== auth.user?.id
+										),
+										auth.user,
+									],
+								});
+							} else {
+								window.location.reload();
 							}
 						} catch (err: any) {
 							if (
@@ -230,10 +250,24 @@ function Skins() {
 														},
 													}
 												);
-												const auth = await updateAuth();
-												if (auth.error === 1) {
-													navigate(`/change_username/${auth.username}`);
-													return;
+												const auth = await refreshAccount({
+													access_token: getUser().accessToken,
+													mc_access_token: getUser().mcAccessToken,
+													mc_refresh_token: getUser().refresh_token,
+												});
+
+												if (auth?.raw && auth.user && context.setProps) {
+													context.setProps({
+														...context.props,
+														accounts: [
+															...context.props.accounts.filter(
+																u => u.id !== auth.user?.id
+															),
+															auth.user,
+														],
+													});
+												} else {
+													window.location.reload();
 												}
 											} catch (err: any) {
 												if (

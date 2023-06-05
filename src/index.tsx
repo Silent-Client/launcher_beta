@@ -5,6 +5,7 @@ import { HashRouter } from "react-router-dom";
 import App from "./App";
 import "./css/theme.css";
 import "./i18n";
+import AppProvider from "./providers/AppContext";
 import reportWebVitals from "./reportWebVitals";
 import theme from "./theme";
 
@@ -15,7 +16,9 @@ root.render(
 	<React.StrictMode>
 		<ChakraProvider theme={theme}>
 			<HashRouter>
-				<App />
+				<AppProvider>
+					<App />
+				</AppProvider>
 			</HashRouter>
 		</ChakraProvider>
 	</React.StrictMode>

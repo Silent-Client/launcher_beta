@@ -1,10 +1,16 @@
 import { Box, Center, Image, Stack } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import { getAuth, getUser } from "./hooks/AuthManager";
+import {
+	getRawAccounts,
+	getSelectedAccount,
+	refreshAccount,
+	setRawAccounts,
+	setSelectedAccount,
+} from "./hooks/NewAuthManager";
 import { getSettings, setSettings } from "./hooks/SettingsManager";
 import full_logo from "./images/full_logo.svg";
 import ChangeUsername from "./pages/ChangeUsername";
@@ -13,6 +19,7 @@ import NeedElectron from "./pages/NeedElectron";
 import Play from "./pages/Play";
 import Settings from "./pages/Settings";
 import Skins from "./pages/Skins";
+import { AppContext } from "./providers/AppContext";
 import News from "./types/News";
 import version, { getVersionIndex, isDebug } from "./utils/version";
 
@@ -23,6 +30,7 @@ function App() {
 	const [needElectron, setNeedElectron] = useState<boolean>(false);
 	const [news, setNews] = useState<News[]>([]);
 	const navigate = useNavigate();
+	const context = useContext(AppContext);
 
 	useEffect(() => {
 		const getData = async () => {
@@ -39,7 +47,30 @@ function App() {
 				const versionIndex = await getVersionIndex();
 				setVersionIndex(versionIndex);
 
-				await getAuth(navigate);
+				let newRawAccounts = [];
+				let newAccounts = [];
+
+				for (const account of await getRawAccounts()) {
+					const newAccount = await refreshAccount(account);
+
+					if (newAccount?.raw && newAccount?.user) {
+						newRawAccounts.push(newAccount.raw);
+						newAccounts.push(newAccount.user);
+					}
+				}
+
+				await setRawAccounts(newRawAccounts);
+
+				if ((await getSelectedAccount()) > newRawAccounts.length - 1) {
+					await setSelectedAccount(0);
+				}
+
+				if (context.setProps) {
+					context.setProps({
+						accounts: newAccounts,
+						selected_account: await getSelectedAccount(),
+					});
+				}
 
 				const { data: news } = await axios.get(
 					"https://api.silentclient.net/_next/get_news"
@@ -138,7 +169,9 @@ function App() {
 								minH="100vh"
 							>
 								<Box>
-									{getUser() && <Header />}
+									{context.props.accounts[
+										context.props.selected_account || 0
+									] && <Header />}
 
 									<Box
 										paddingInlineStart={5}
@@ -146,7 +179,9 @@ function App() {
 										paddingTop={5}
 										mb={5}
 									>
-										{(getUser() && (
+										{(context.props.accounts[
+											context.props.selected_account || 0
+										] && (
 											<Routes>
 												<Route
 													path="/"
@@ -161,6 +196,7 @@ function App() {
 													}
 												/>
 												<Route path="/skins" element={<Skins />} />
+												<Route path="/login" element={<Login />} />
 												<Route
 													path="/change_username/:username"
 													element={<ChangeUsername />}

@@ -11,10 +11,12 @@ import {
 	Stack,
 	useToast,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { login, tryLogin } from "../hooks/AuthManager";
+import { login, tryLogin } from "../hooks/NewAuthManager";
+import { AppContext } from "../providers/AppContext";
+import version from "../utils/version";
 
 function Login() {
 	const { t, i18n } = useTranslation();
@@ -31,6 +33,7 @@ function Login() {
 	const [scEmail, setScEmail] = React.useState("");
 	const [scPassword, setScPassword] = React.useState("");
 	const [auth, setAuth] = React.useState(false);
+	const context = useContext(AppContext);
 
 	ipcRenderer?.on(
 		"auth/setToken",
@@ -40,7 +43,7 @@ function Login() {
 			}
 			setIsLoading(true);
 			try {
-				const res = await login(scEmail, scPassword, token);
+				const res = await login(scEmail, scPassword, token, context);
 
 				if (res.errors) {
 					for (const err of res.errors) {
@@ -61,7 +64,7 @@ function Login() {
 					return;
 				}
 
-				window.location.reload();
+				window.location.href = "/";
 			} catch (error: any) {
 				toast({
 					title: t("login.errors.title"),
@@ -200,7 +203,7 @@ function Login() {
 							onClick={async () => {
 								setIsLoading(true);
 								try {
-									const res = await login(scEmail, scPassword, null);
+									const res = await login(scEmail, scPassword, null, context);
 
 									if (res.errors) {
 										for (const err of res.errors) {
@@ -221,7 +224,7 @@ function Login() {
 										return;
 									}
 
-									window.location.reload();
+									window.location.href = `/?v=${version()}`;
 								} catch (error: any) {
 									toast({
 										title: "Error!",
