@@ -14,14 +14,7 @@ import {
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import {
-	getRawAccounts,
-	getSelectedAccount,
-	login,
-	setRawAccounts,
-	setSelectedAccount,
-	tryLogin,
-} from "../hooks/NewAuthManager";
+import { login, tryLogin } from "../hooks/NewAuthManager";
 import { AppContext } from "../providers/AppContext";
 import version from "../utils/version";
 
@@ -48,6 +41,7 @@ function Login() {
 			if (scEmail.trim() === "" || scPassword.trim() === "" || isLoading) {
 				return;
 			}
+			console.log(token);
 			setIsLoading(true);
 			try {
 				const res = await login(scEmail, scPassword, token, context);
@@ -64,18 +58,14 @@ function Login() {
 					}
 					setScEmail("");
 					setScPassword("");
-					const language = i18n.language;
-					const accounts = await getRawAccounts();
-					const selected = await getSelectedAccount();
+
 					ipcRenderer?.send("app/clearcookie");
-					setSelectedAccount(selected);
-					setRawAccounts(accounts);
-					i18n.changeLanguage(language);
+
 					setAuth(false);
 					return;
 				}
 
-				window.location.href = "/";
+				window.location.href = `/?v=${version()}`;
 			} catch (error: any) {
 				toast({
 					title: t("login.errors.title"),
@@ -117,13 +107,9 @@ function Login() {
 
 			setScEmail(data.email);
 			setScPassword(data.password);
-			const language = i18n.language;
-			const accounts = await getRawAccounts();
-			const selected = await getSelectedAccount();
+
 			ipcRenderer?.send("app/clearcookie");
-			setSelectedAccount(selected);
-			setRawAccounts(accounts);
-			i18n.changeLanguage(language);
+
 			setAuth(true);
 		} catch (error: any) {
 			toast({
@@ -208,13 +194,7 @@ function Login() {
 						</Center>
 						<Button
 							onClick={async () => {
-								const language = i18n.language;
-								const accounts = await getRawAccounts();
-								const selected = await getSelectedAccount();
 								ipcRenderer.send("app/getAuthToken");
-								setSelectedAccount(selected);
-								setRawAccounts(accounts);
-								i18n.changeLanguage(language);
 							}}
 							colorScheme={"whatsapp"}
 							isDisabled={isLoading}
@@ -240,13 +220,7 @@ function Login() {
 										}
 										setScEmail("");
 										setScPassword("");
-										const language = i18n.language;
-										const accounts = await getRawAccounts();
-										const selected = await getSelectedAccount();
-										ipcRenderer?.send("app/clearcookie");
-										setSelectedAccount(selected);
-										setRawAccounts(accounts);
-										i18n.changeLanguage(language);
+
 										setAuth(false);
 										return;
 									}
