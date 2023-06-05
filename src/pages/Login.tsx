@@ -14,7 +14,14 @@ import {
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { login, tryLogin } from "../hooks/NewAuthManager";
+import {
+	getRawAccounts,
+	getSelectedAccount,
+	login,
+	setRawAccounts,
+	setSelectedAccount,
+	tryLogin,
+} from "../hooks/NewAuthManager";
 import { AppContext } from "../providers/AppContext";
 import version from "../utils/version";
 
@@ -58,7 +65,11 @@ function Login() {
 					setScEmail("");
 					setScPassword("");
 					const language = i18n.language;
+					const accounts = await getRawAccounts();
+					const selected = await getSelectedAccount();
 					ipcRenderer?.send("app/clearcookie");
+					setSelectedAccount(selected);
+					setRawAccounts(accounts);
 					i18n.changeLanguage(language);
 					setAuth(false);
 					return;
@@ -107,7 +118,11 @@ function Login() {
 			setScEmail(data.email);
 			setScPassword(data.password);
 			const language = i18n.language;
+			const accounts = await getRawAccounts();
+			const selected = await getSelectedAccount();
 			ipcRenderer?.send("app/clearcookie");
+			setSelectedAccount(selected);
+			setRawAccounts(accounts);
 			i18n.changeLanguage(language);
 			setAuth(true);
 		} catch (error: any) {
@@ -192,7 +207,15 @@ function Login() {
 							<Heading>{t("login.minecraft.header")}</Heading>
 						</Center>
 						<Button
-							onClick={() => ipcRenderer.send("app/getAuthToken")}
+							onClick={async () => {
+								const language = i18n.language;
+								const accounts = await getRawAccounts();
+								const selected = await getSelectedAccount();
+								ipcRenderer.send("app/getAuthToken");
+								setSelectedAccount(selected);
+								setRawAccounts(accounts);
+								i18n.changeLanguage(language);
+							}}
 							colorScheme={"whatsapp"}
 							isDisabled={isLoading}
 						>
@@ -218,7 +241,11 @@ function Login() {
 										setScEmail("");
 										setScPassword("");
 										const language = i18n.language;
+										const accounts = await getRawAccounts();
+										const selected = await getSelectedAccount();
 										ipcRenderer?.send("app/clearcookie");
+										setSelectedAccount(selected);
+										setRawAccounts(accounts);
 										i18n.changeLanguage(language);
 										setAuth(false);
 										return;
