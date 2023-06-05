@@ -9,23 +9,23 @@ export interface IRawAccount {
 }
 
 export async function getRawAccounts() {
-	const data = window.sessionStorage.getItem("mc-accounts");
+	const data = window.localStorage.getItem("mc-accounts");
 
 	return data ? (JSON.parse(data) as IRawAccount[]) : [];
 }
 
 export async function setRawAccounts(data: IRawAccount[]) {
-	window.sessionStorage.setItem("mc-accounts", JSON.stringify(data));
+	window.localStorage.setItem("mc-accounts", JSON.stringify(data));
 }
 
 export async function getSelectedAccount() {
-	const data = window.sessionStorage.getItem("mc-account");
+	const data = window.localStorage.getItem("mc-account");
 
 	return data ? Number(data) : 0;
 }
 
 export async function setSelectedAccount(data: number) {
-	window.sessionStorage.setItem("mc-account", data.toString());
+	window.localStorage.setItem("mc-account", data.toString());
 }
 
 export async function refreshAccount(account: IRawAccount) {
