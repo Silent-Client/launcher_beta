@@ -67,7 +67,7 @@ export async function refreshAccount(account: IRawAccount) {
 				data.user.mcAccessToken = minecraft.access_token;
 				data.user.clientToken = minecraft.client_token;
 				data.user.refresh_token = minecraft.refresh_token;
-				data.user.uuid = minecraft.uuid;
+				data.user.uuid = minecraft.id;
 			}
 		}
 
