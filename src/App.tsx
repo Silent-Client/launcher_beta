@@ -165,7 +165,6 @@ function App() {
 													path="/change_username/:username"
 													element={<ChangeUsername />}
 												/>
-												<Route path="/login" element={<Login />} />
 											</Routes>
 										)) || (
 											<Routes>

@@ -1,5 +1,4 @@
 import {
-	AddIcon,
 	ChevronDownIcon,
 	CloseIcon,
 	EditIcon,
@@ -16,7 +15,6 @@ import {
 	Link,
 	Menu,
 	MenuButton,
-	MenuGroup,
 	MenuItem,
 	MenuList,
 	Modal,
@@ -49,14 +47,7 @@ import {
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { Link as RLink, useNavigate } from "react-router-dom";
-import {
-	getUser,
-	getUsers,
-	logout,
-	removeUser,
-	setSelectedUser,
-	updateAuth,
-} from "../hooks/AuthManager";
+import { getUser, logout, updateAuth } from "../hooks/AuthManager";
 import * as SettingsManager from "../hooks/SettingsManager";
 import i18n from "../i18n";
 import panorama from "../images/panorama.webp";
@@ -64,12 +55,9 @@ import plus_being from "../images/plus_being.png";
 import plus_promo from "../images/plus_promo.png";
 import steve from "../images/steve.png";
 import News from "../types/News";
-import User from "../types/User";
 import { isAdmin, isBanned, isPlus } from "../utils/userUtils";
 
 function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
-	const [currentUser, setCurrentUser] = useState<User | null>(getUser());
-	const [users, setUsers] = useState<User[]>(getUsers());
 	let ipcRenderer: any = null;
 	try {
 		ipcRenderer = window.require("electron").ipcRenderer;
@@ -210,7 +198,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				setStatus("Connecting to servers");
 				await axios.post("https://api.silentclient.net/stats/launch", null, {
 					headers: {
-						Authorization: `Bearer ${currentUser?.accessToken}`,
+						Authorization: `Bearer ${getUser()?.accessToken}`,
 					},
 				});
 			} catch {}
@@ -454,103 +442,48 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 										w="20px"
 										h="20px"
 										borderRadius={5}
-										src={`https://mc-heads.net/avatar/${currentUser?.original_username}.png`}
+										src={`https://mc-heads.net/avatar/${
+											getUser()?.original_username
+										}.png`}
 										fallbackSrc={steve}
 									/>
 								}
 								rightIcon={<ChevronDownIcon />}
 							>
 								<Text maxW="90px" overflow={"hidden"} textOverflow="ellipsis">
-									{currentUser?.original_username}
+									{getUser()?.original_username}
 								</Text>
 							</MenuButton>
 
 							<MenuList bgColor="black">
-								<MenuGroup title="Current account">
-									<MenuItem
-										as={Button}
-										borderRadius={0}
-										justifyContent="start"
-										bgColor="black"
-										leftIcon={<EditIcon />}
-										onClick={() => {
-											window
-												.require("electron")
-												.shell.openExternal(
-													"https://store.silentclient.net/edit_account"
-												);
-										}}
-									>
-										{t("launch.account.edit")}
-									</MenuItem>
-									<MenuItem
-										as={Button}
-										borderRadius={0}
-										justifyContent="start"
-										bgColor="black"
-										leftIcon={<CloseIcon />}
-										onClick={logout}
-									>
-										{t("launch.account.logout")}
-									</MenuItem>
-								</MenuGroup>
-								<MenuGroup title="Other accounts">
-									<MenuItem
-										as={Button}
-										borderRadius={0}
-										justifyContent="start"
-										bgColor="black"
-										leftIcon={<AddIcon />}
-										onClick={() => navigate("/login")}
-									>
-										Add account
-									</MenuItem>
-									{users.map(
-										(user, key) =>
-											user.id !== currentUser?.id && (
-												<MenuItem
-													as={Button}
-													borderRadius={0}
-													justifyContent="start"
-													bgColor="black"
-													leftIcon={
-														<Image
-															w="20px"
-															h="20px"
-															borderRadius={5}
-															src={`https://mc-heads.net/avatar/${user.original_username}.png`}
-															fallbackSrc={steve}
-														/>
-													}
-													onClick={async () => {
-														setSelectedUser(key);
-														setCurrentUser(user);
-														await updateAuth();
-													}}
-													rightIcon={
-														<IconButton
-															aria-label=""
-															icon={<CloseIcon />}
-															onClick={async () => {
-																await removeUser(user.id);
-																window.location.reload();
-															}}
-														/>
-													}
-												>
-													<Box w="full">
-														<Text
-															maxW="120px"
-															overflow={"hidden"}
-															textOverflow="ellipsis"
-														>
-															{user.original_username}
-														</Text>
-													</Box>
-												</MenuItem>
-											)
-									)}
-								</MenuGroup>
+								<MenuItem
+									as={Button}
+									borderRadius={0}
+									justifyContent="start"
+									bgColor="black"
+									leftIcon={<EditIcon />}
+									minW={i18n.language === "ru" ? "146px" : "123.27px"}
+									maxW={i18n.language === "ru" ? "146px" : "123.27px"}
+									onClick={() => {
+										window
+											.require("electron")
+											.shell.openExternal(
+												"https://store.silentclient.net/edit_account"
+											);
+									}}
+								>
+									{t("launch.account.edit")}
+								</MenuItem>
+								<MenuItem
+									as={Button}
+									borderRadius={0}
+									justifyContent="start"
+									bgColor="black"
+									leftIcon={<CloseIcon />}
+									onClick={logout}
+								>
+									{t("launch.account.logout")}
+								</MenuItem>
 							</MenuList>
 						</Menu>
 					</Stack>
