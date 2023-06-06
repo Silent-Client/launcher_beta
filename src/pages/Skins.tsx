@@ -17,7 +17,11 @@ import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { SkinViewer } from "skinview3d";
-import { refreshAccount, setSelectedAccount } from "../hooks/NewAuthManager";
+import {
+	logout,
+	refreshAccount,
+	setSelectedAccount,
+} from "../hooks/NewAuthManager";
 import { AppContext } from "../providers/AppContext";
 
 function Skins() {
@@ -166,6 +170,7 @@ function Skins() {
 								});
 								await setSelectedAccount(context.props.selected_account || 0);
 							} else {
+								logout(context);
 								window.location.reload();
 							}
 						} catch (err: any) {
@@ -281,6 +286,7 @@ function Skins() {
 														context.props.selected_account || 0
 													);
 												} else {
+													logout(context);
 													window.location.reload();
 												}
 											} catch (err: any) {

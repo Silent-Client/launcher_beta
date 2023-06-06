@@ -194,6 +194,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				});
 				await setSelectedAccount(context.props.selected_account || 0);
 			} else {
+				logout(context);
 				window.location.reload();
 			}
 			if (isBanned(context)) {

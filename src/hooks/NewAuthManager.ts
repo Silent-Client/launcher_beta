@@ -61,12 +61,11 @@ export async function refreshAccount(
 					data.user.refresh_token = data.raw.mc_refresh_token;
 				}
 			} else {
-				const { data: minecraft } = await axios.post(
-					"https://auth.silentclient.net/refresh",
-					{
-						code: account.mc_refresh_token,
-					}
-				);
+				const minecraft = await window
+					.require("electron")
+					.ipcRenderer.invoke("mcauth/refresh", {
+						code: data.raw.mc_refresh_token,
+					});
 
 				if (data.user?.original_username !== minecraft.name) {
 					return null;
@@ -151,12 +150,11 @@ export async function login(
 
 		try {
 			if (mcToken !== null) {
-				const { data: mc } = await axios.post(
-					"https://auth.silentclient.net/auth",
-					{
+				const mc = await window
+					.require("electron")
+					.ipcRenderer.invoke("mcauth/auth", {
 						code: mcToken,
-					}
-				);
+					});
 
 				if (mc.error) {
 					let error = "";

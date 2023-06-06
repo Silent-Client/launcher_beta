@@ -152,12 +152,9 @@ async function login(
 
 		try {
 			if (mcToken !== null) {
-				const { data: mc } = await axios.post(
-					"https://auth.silentclient.net/auth",
-					{
-						code: mcToken,
-					}
-				);
+				const mc = await window
+					.require("electron")
+					.ipcRenderer.invoke("mcauth/auth");
 
 				if (mc.error) {
 					let error = "";
@@ -242,9 +239,11 @@ async function updateAuth() {
 		};
 		let mc = null;
 		if (user.refresh_token !== null) {
-			mc = await axios.post("https://auth.silentclient.net/refresh", {
-				code: user.refresh_token,
-			});
+			mc = await window
+				.require("electron")
+				.ipcRenderer.invoke("mcauth/refresh", {
+					code: user.refresh_token,
+				});
 
 			if (mc.data?.error) {
 				logout();
