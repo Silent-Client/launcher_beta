@@ -143,11 +143,14 @@ function Skins() {
 									},
 								}
 							);
-							const auth = await refreshAccount({
-								access_token: getUser().accessToken,
-								mc_access_token: getUser().mcAccessToken,
-								mc_refresh_token: getUser().refresh_token,
-							});
+							const auth = await refreshAccount(
+								{
+									access_token: getUser().accessToken,
+									mc_access_token: getUser().mcAccessToken,
+									mc_refresh_token: getUser().refresh_token,
+								},
+								true
+							);
 
 							if (auth?.raw && auth.user && context.setProps) {
 								context.setProps({
@@ -253,11 +256,14 @@ function Skins() {
 														},
 													}
 												);
-												const auth = await refreshAccount({
-													access_token: getUser().accessToken,
-													mc_access_token: getUser().mcAccessToken,
-													mc_refresh_token: getUser().refresh_token,
-												});
+												const auth = await refreshAccount(
+													{
+														access_token: getUser().accessToken,
+														mc_access_token: getUser().mcAccessToken,
+														mc_refresh_token: getUser().refresh_token,
+													},
+													true
+												);
 
 												if (auth?.raw && auth.user && context.setProps) {
 													context.setProps({
