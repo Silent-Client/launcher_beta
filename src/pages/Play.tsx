@@ -183,12 +183,15 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 
 			if (auth?.raw && auth.user && context.setProps) {
 				context.setProps({
-					...context.props,
 					accounts: [
 						...context.props.accounts.filter(u => u.id !== auth.user?.id),
 						auth.user,
 					],
+					selected_account: context.props.accounts.filter(
+						u => u.id !== auth.user?.id
+					).length,
 				});
+				await setSelectedAccount(context.props.selected_account || 0);
 			} else {
 				window.location.reload();
 			}

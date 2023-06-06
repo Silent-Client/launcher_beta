@@ -17,7 +17,7 @@ import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { SkinViewer } from "skinview3d";
-import { refreshAccount } from "../hooks/NewAuthManager";
+import { refreshAccount, setSelectedAccount } from "../hooks/NewAuthManager";
 import { AppContext } from "../providers/AppContext";
 
 function Skins() {
@@ -151,14 +151,17 @@ function Skins() {
 
 							if (auth?.raw && auth.user && context.setProps) {
 								context.setProps({
-									...context.props,
 									accounts: [
 										...context.props.accounts.filter(
 											u => u.id !== auth.user?.id
 										),
 										auth.user,
 									],
+									selected_account: context.props.accounts.filter(
+										u => u.id !== auth.user?.id
+									).length,
 								});
+								await setSelectedAccount(context.props.selected_account || 0);
 							} else {
 								window.location.reload();
 							}
@@ -258,14 +261,19 @@ function Skins() {
 
 												if (auth?.raw && auth.user && context.setProps) {
 													context.setProps({
-														...context.props,
 														accounts: [
 															...context.props.accounts.filter(
 																u => u.id !== auth.user?.id
 															),
 															auth.user,
 														],
+														selected_account: context.props.accounts.filter(
+															u => u.id !== auth.user?.id
+														).length,
 													});
+													await setSelectedAccount(
+														context.props.selected_account || 0
+													);
 												} else {
 													window.location.reload();
 												}
