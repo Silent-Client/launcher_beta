@@ -175,14 +175,11 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 		setIsLoading(true);
 		try {
 			setStatus("Refreshing authorization");
-			const auth = await refreshAccount(
-				{
-					access_token: getUser().accessToken,
-					mc_access_token: getUser().mcAccessToken,
-					mc_refresh_token: getUser().refresh_token,
-				},
-				true
-			);
+			const auth = await refreshAccount({
+				access_token: getUser().accessToken,
+				mc_access_token: getUser().mcAccessToken,
+				mc_refresh_token: getUser().refresh_token,
+			});
 
 			if (auth?.raw && auth.user && context.setProps) {
 				context.setProps({
