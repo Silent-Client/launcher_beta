@@ -175,6 +175,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 		setIsLoading(true);
 		try {
 			setStatus("Refreshing authorization");
+
 			const auth = await refreshAccount({
 				access_token: getUser().accessToken,
 				mc_access_token: getUser().mcAccessToken,
@@ -228,10 +229,11 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 					},
 				});
 			} catch {}
+
 			const launch = await ipcRenderer.invoke("app/launch", {
-				account: getUser(),
+				account: auth?.user,
 				settings: SettingsManager.getSettings(),
-				auth: getUser(),
+				auth: auth?.user,
 			});
 			if (launch.error) {
 				toast({
