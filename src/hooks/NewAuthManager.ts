@@ -28,7 +28,10 @@ export async function setSelectedAccount(data: number) {
 	window.localStorage.setItem("mc-account", data.toString());
 }
 
-export async function refreshAccount(account: IRawAccount) {
+export async function refreshAccount(
+	account: IRawAccount,
+	mini_refresh?: boolean
+) {
 	try {
 		let data: {
 			raw: IRawAccount;
@@ -52,22 +55,31 @@ export async function refreshAccount(account: IRawAccount) {
 			data.user.accessToken = account.access_token;
 		}
 		if (account.mc_refresh_token) {
-			const { data: minecraft } = await axios.post(
-				"https://auth.silentclient.net/refresh",
-				{
-					code: account.mc_refresh_token,
+			if (mini_refresh) {
+				if (data.user) {
+					data.user.mcAccessToken = data.raw.mc_access_token;
+					data.user.refresh_token = data.raw.mc_refresh_token;
 				}
-			);
+			} else {
+				const { data: minecraft } = await axios.post(
+					"https://auth.silentclient.net/refresh",
+					{
+						code: account.mc_refresh_token,
+					}
+				);
 
-			if (data.user?.original_username !== minecraft.name) {
-				return null;
-			}
+				if (data.user?.original_username !== minecraft.name) {
+					return null;
+				}
 
-			if (data.user) {
-				data.user.mcAccessToken = minecraft.access_token;
-				data.user.clientToken = minecraft.client_token;
-				data.user.refresh_token = minecraft.refresh_token;
-				data.user.uuid = minecraft.id;
+				if (data.user) {
+					data.user.mcAccessToken = minecraft.access_token;
+					data.raw.access_token = minecraft.access_token;
+					data.user.clientToken = minecraft.client_token;
+					data.user.refresh_token = minecraft.refresh_token;
+					data.raw.mc_refresh_token = minecraft.refresh_token;
+					data.user.uuid = minecraft.id;
+				}
 			}
 		}
 

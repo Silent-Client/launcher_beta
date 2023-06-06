@@ -49,14 +49,27 @@ function App() {
 
 				let newRawAccounts = [];
 				let newAccounts = [];
+				let accountIndex = 0;
 
 				for (const account of await getRawAccounts()) {
-					const newAccount = await refreshAccount(account);
+					console.log(
+						`Updating account ${accountIndex} (Mini Refresh: ${!(
+							accountIndex === (await getSelectedAccount())
+						)})`
+					);
+					const newAccount = await refreshAccount(
+						account,
+						!(accountIndex === (await getSelectedAccount()))
+					);
 
 					if (newAccount?.raw && newAccount?.user) {
+						console.log("The account has been successfully refreshed");
 						newRawAccounts.push(newAccount.raw);
 						newAccounts.push(newAccount.user);
+					} else {
+						console.log("Account was refreshed with an error");
 					}
+					accountIndex++;
 				}
 
 				await setRawAccounts(newRawAccounts);
