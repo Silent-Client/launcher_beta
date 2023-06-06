@@ -52,15 +52,8 @@ function App() {
 				let accountIndex = 0;
 
 				for (const account of await getRawAccounts()) {
-					console.log(
-						`Updating account ${accountIndex} (Mini Refresh: ${!(
-							accountIndex === (await getSelectedAccount())
-						)})`
-					);
-					const newAccount = await refreshAccount(
-						account,
-						!(accountIndex === (await getSelectedAccount()))
-					);
+					console.log(`Updating account ${accountIndex}`);
+					const newAccount = await refreshAccount(account, true);
 
 					if (newAccount?.raw && newAccount?.user) {
 						console.log("The account has been successfully refreshed");
