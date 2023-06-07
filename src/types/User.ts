@@ -19,4 +19,6 @@ export default interface User {
 	refresh_token: string | null;
 	uuid: string | null;
 	is_manager: number;
+	is_tester_manager: number;
+	is_senior_tester: number;
 }

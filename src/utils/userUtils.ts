@@ -23,7 +23,17 @@ export function isPlus(context: AppContextType) {
 			1 ||
 		context.props.accounts[context.props.selected_account || 0]?.is_dev === 1 ||
 		context.props.accounts[context.props.selected_account || 0]?.is_manager ===
-			1
+			1 ||
+		context.props.accounts[context.props.selected_account || 0]?.is_manager ===
+			1 ||
+		context.props.accounts[context.props.selected_account || 0]
+			?.is_tester_manager === 1 ||
+		context.props.accounts[context.props.selected_account || 0]
+			?.is_senior_tester === 1 ||
+		context.props.accounts[context.props.selected_account || 0]
+			?.is_tester_manager === 1 ||
+		context.props.accounts[context.props.selected_account || 0]
+			?.is_senior_tester === 1
 	);
 }
 
