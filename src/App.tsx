@@ -13,7 +13,6 @@ import {
 } from "./hooks/NewAuthManager";
 import { getSettings, setSettings } from "./hooks/SettingsManager";
 import full_logo from "./images/full_logo.svg";
-import ChangeUsername from "./pages/ChangeUsername";
 import Login from "./pages/Login";
 import NeedElectron from "./pages/NeedElectron";
 import Play from "./pages/Play";
@@ -203,10 +202,6 @@ function App() {
 												/>
 												<Route path="/skins" element={<Skins />} />
 												<Route path="/login" element={<Login />} />
-												<Route
-													path="/change_username/:username"
-													element={<ChangeUsername />}
-												/>
 											</Routes>
 										)) || (
 											<Routes>
