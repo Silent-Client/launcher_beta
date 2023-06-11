@@ -261,6 +261,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 			setIsLoading(false);
 		}
 		setUpdating(false);
+		patchingModal.onClose();
 	};
 
 	return location.pathname !== "/" ? null : (
@@ -363,6 +364,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 								</Text>
 							</Center>
 							<Switch
+								isDisabled={isLoading}
 								isChecked={beta}
 								onChange={e => {
 									if (!isPlus(context)) {
@@ -425,6 +427,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 								</Center>
 								<Switch
 									isChecked={test}
+									isDisabled={isLoading}
 									onChange={e => {
 										setBeta(false);
 										setTest(!test);
@@ -452,6 +455,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 								minW={i18n.language === "ru" ? "146px" : "123.27px"}
 								size="sm"
 								onClick={() => ipcRenderer.send("app/getCustomJar")}
+								isDisabled={isLoading}
 							>
 								Custom Jar
 							</Button>
@@ -469,6 +473,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 								size="sm"
 								minW={i18n.language === "ru" ? "146px" : "123.27px"}
 								maxW={i18n.language === "ru" ? "146px" : "123.27px"}
+								isDisabled={isLoading}
 								leftIcon={
 									<Image
 										w="20px"
