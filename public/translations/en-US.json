@@ -25,7 +25,8 @@
 			"title": "Error",
 			"required": "This field is required",
 			"Incorrect login or password": "Incorrect login or password",
-			"Unknown error =(": "Unknown error =("
+			"Unknown error =(": "Unknown error =(",
+			"Username MC and SC account does not match.": "Username Minecraft and Silent Client account does not match."
 		}
 	},
 	"launch": {
