@@ -41,7 +41,8 @@
 		},
 		"button": {
 			"launch": "Launch",
-			"loading": "Loading"
+			"loading": "Loading",
+			"updating": "Patching"
 		},
 		"errors": {
 			"title": "Error",

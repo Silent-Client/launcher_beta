@@ -41,7 +41,8 @@
 		},
 		"button": {
 			"launch": "Запуск",
-			"loading": "Загрузка"
+			"loading": "Загрузка",
+			"updating": "Обновление"
 		},
 		"errors": {
 			"title": "Ошибка",
