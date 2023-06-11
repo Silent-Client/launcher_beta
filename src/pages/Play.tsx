@@ -62,6 +62,7 @@ import plus_promo from "../images/plus_promo.png";
 import steve from "../images/steve.png";
 import { AppContext } from "../providers/AppContext";
 import News from "../types/News";
+import Settings from "../types/Settings";
 import { isAdmin, isBanned, isPlus } from "../utils/userUtils";
 
 function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
@@ -111,9 +112,9 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	ipcRenderer?.on(
 		"settings/customJar",
 		function (evt: any, message: { path: string }) {
-			SettingsManager.setSettings({
+			launch({
 				memory: SettingsManager.getSettings().memory,
-				branch: SettingsManager.getSettings().branch,
+				branch: "custom",
 				version: SettingsManager.getSettings().version,
 				jarPath: message.path,
 				minecraftPath: SettingsManager.getSettings().minecraftPath,
@@ -171,7 +172,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 
 	const navigate = useNavigate();
 
-	const launch = async () => {
+	const launch = async (settings?: Settings) => {
 		setIsLoading(true);
 		try {
 			setStatus("Refreshing authorization");
@@ -208,20 +209,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				});
 				return;
 			}
-			if (
-				SettingsManager.getSettings().branch === "test" &&
-				!SettingsManager.getSettings().jarPath
-			) {
-				toast({
-					title: t("launch.errors.title"),
-					description: t("launch.errors.select_jar"),
-					status: "error",
-					duration: 6000,
-					isClosable: true,
-					position: "bottom",
-				});
-				return;
-			}
+
 			try {
 				setStatus("Connecting to servers");
 				await axios.post("https://api.silentclient.net/stats/launch", null, {
@@ -233,7 +221,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 
 			const launch = await ipcRenderer.invoke("app/launch", {
 				account: auth?.user,
-				settings: SettingsManager.getSettings(),
+				settings: settings || SettingsManager.getSettings(),
 				auth: auth?.user,
 			});
 			if (launch.error) {
@@ -575,7 +563,9 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 						fontSize="2xl"
 						textTransform={"uppercase"}
 						isDisabled={isLoading}
-						onClick={launch}
+						onClick={() => {
+							launch();
+						}}
 					>
 						{isLoading ? t("launch.button.loading") : t("launch.button.launch")}
 					</Button>
