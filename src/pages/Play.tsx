@@ -173,6 +173,9 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	const navigate = useNavigate();
 
 	const launch = async (settings?: Settings) => {
+		if (isLoading) {
+			return;
+		}
 		setIsLoading(true);
 		try {
 			setStatus("Refreshing authorization");
