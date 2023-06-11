@@ -25,7 +25,8 @@
 			"title": "Ошибка",
 			"required": "Это поле обязательное",
 			"Incorrect login or password": "Неправильный логин или пароль",
-			"Unknown error =(": "Неизвестная ошибка!"
+			"Unknown error =(": "Неизвестная ошибка!",
+			"Username MC and SC account does not match.": "Имя пользователя Minecraft аккаунта и аккаунта Silent Client не совпадают."
 		}
 	},
 	"launch": {
