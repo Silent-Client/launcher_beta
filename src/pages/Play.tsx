@@ -21,12 +21,14 @@ import {
 	MenuList,
 	Modal,
 	ModalBody,
+	ModalCloseButton,
 	ModalContent,
 	ModalFooter,
 	ModalHeader,
 	ModalOverlay,
 	Progress,
 	SimpleGrid,
+	Spinner,
 	Stack,
 	Switch,
 	Text,
@@ -48,7 +50,7 @@ import {
 } from "react-icons/fa";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import { Link as RLink, useNavigate } from "react-router-dom";
+import { Link as RLink, useLocation, useNavigate } from "react-router-dom";
 import {
 	logout,
 	refreshAccount,
@@ -78,6 +80,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 		image: string;
 		redirect: string;
 	} | null>(null);
+	const location = useLocation();
 
 	moment.locale(i18n.language === "ru" ? "ru" : "en");
 	const context = useContext(AppContext);
@@ -94,12 +97,19 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 		SettingsManager.getSettings().branch === "test"
 	);
 	const [version, setVersion] = useState<"1.8" | "1.12">("1.8");
+	const [updating, setUpdating] = useState<boolean>(false);
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const crashModal = useDisclosure();
+	const patchingModal = useDisclosure();
 
 	ipcRenderer?.on("app/crashReport", function (evt: any) {
 		crashModal.onOpen();
+	});
+
+	ipcRenderer?.on("app/updating", function (evt: any) {
+		setUpdating(true);
+		patchingModal.onOpen();
 	});
 
 	ipcRenderer?.on(
@@ -176,6 +186,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 		if (isLoading) {
 			return;
 		}
+		setUpdating(false);
 		setIsLoading(true);
 		try {
 			setStatus("Refreshing authorization");
@@ -249,9 +260,10 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 		} finally {
 			setIsLoading(false);
 		}
+		setUpdating(false);
 	};
 
-	return (
+	return location.pathname !== "/" ? null : (
 		<Container maxW="full" minW="full">
 			<Stack
 				borderRadius={"lg"}
@@ -565,28 +577,31 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 						size={"lg"}
 						fontSize="2xl"
 						textTransform={"uppercase"}
-						isDisabled={isLoading}
+						opacity={isLoading ? "0.7" : "1"}
 						onClick={() => {
-							launch();
+							if (!isLoading) {
+								launch();
+							} else if (updating) {
+								patchingModal.onOpen();
+							}
 						}}
+						leftIcon={isLoading ? <Spinner /> : undefined}
 					>
-						{isLoading ? t("launch.button.loading") : t("launch.button.launch")}
+						{isLoading
+							? updating
+								? t("launch.button.updating")
+								: t("launch.button.loading")
+							: t("launch.button.launch")}
 					</Button>
 				</Stack>
 			</Stack>
-			<Modal
-				isOpen={isLoading}
-				closeOnEsc={false}
-				closeOnOverlayClick={false}
-				onClose={() => {
-					// nothing
-				}}
-			>
+			<Modal isOpen={patchingModal.isOpen} onClose={patchingModal.onClose}>
 				<ModalOverlay />
 				<ModalContent bgColor={"rgb(19, 19, 19)"}>
 					<ModalHeader w="full" textAlign={"center"}>
-						{t("launch.button.loading")}
+						{t("launch.button.updating")}
 					</ModalHeader>
+					<ModalCloseButton />
 					<ModalBody>
 						<Link
 							onClick={() =>

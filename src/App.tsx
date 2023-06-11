@@ -184,16 +184,12 @@ function App() {
 										paddingTop={5}
 										mb={5}
 									>
+										<Play news={news} versionIndex={versionIndex} />
 										{(context.props.accounts[
 											context.props.selected_account || 0
 										] && (
 											<Routes>
-												<Route
-													path="/"
-													element={
-														<Play news={news} versionIndex={versionIndex} />
-													}
-												/>
+												<Route path="/" element={<></>} />
 												<Route
 													path="/settings"
 													element={
