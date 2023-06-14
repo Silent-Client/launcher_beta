@@ -184,21 +184,23 @@ function App() {
 										paddingTop={5}
 										mb={5}
 									>
-										<Play news={news} versionIndex={versionIndex} />
 										{(context.props.accounts[
 											context.props.selected_account || 0
 										] && (
-											<Routes>
-												<Route path="/" element={<></>} />
-												<Route
-													path="/settings"
-													element={
-														<Settings ram={ram} versionIndex={versionIndex} />
-													}
-												/>
-												<Route path="/skins" element={<Skins />} />
-												<Route path="/login" element={<Login />} />
-											</Routes>
+											<>
+												<Play news={news} versionIndex={versionIndex} />
+												<Routes>
+													<Route path="/" element={<></>} />
+													<Route
+														path="/settings"
+														element={
+															<Settings ram={ram} versionIndex={versionIndex} />
+														}
+													/>
+													<Route path="/skins" element={<Skins />} />
+													<Route path="/login" element={<Login />} />
+												</Routes>
+											</>
 										)) || (
 											<Routes>
 												<Route path="*" element={<Login />} />
