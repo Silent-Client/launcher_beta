@@ -194,11 +194,10 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 			return;
 		}
 		if (test) {
-			launch({
+			settings = {
 				...SettingsManager.getSettings(),
 				branch: branch,
-			});
-			return;
+			};
 		}
 		setUpdating(false);
 		setIsLoading(true);
