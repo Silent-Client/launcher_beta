@@ -13,6 +13,7 @@ import {
 	Heading,
 	IconButton,
 	Image,
+	Input,
 	Link,
 	Menu,
 	MenuButton,
@@ -96,6 +97,9 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	const [test, setTest] = useState<boolean>(
 		SettingsManager.getSettings().branch === "test"
 	);
+	const [branch, setBranch] = useState<string>(
+		SettingsManager.getSettings().testBranch || "test"
+	);
 	const [version, setVersion] = useState<"1.8" | "1.12">("1.8");
 	const [updating, setUpdating] = useState<boolean>(false);
 	const toast = useToast();
@@ -133,6 +137,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				discord: SettingsManager.getSettings().discord,
 				afterLaunch: SettingsManager.getSettings().afterLaunch,
 				preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
+				testBranch: SettingsManager.getSettings().testBranch,
 			});
 		}
 	);
@@ -149,6 +154,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 			discord: SettingsManager.getSettings().discord,
 			afterLaunch: SettingsManager.getSettings().afterLaunch,
 			preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
+			testBranch: SettingsManager.getSettings().testBranch,
 		});
 		if (
 			(SettingsManager.getSettings().branch === "experimental" &&
@@ -168,6 +174,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				discord: SettingsManager.getSettings().discord,
 				afterLaunch: SettingsManager.getSettings().afterLaunch,
 				preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
+				testBranch: SettingsManager.getSettings().testBranch,
 			});
 		}
 		const getData = async () => {
@@ -196,6 +203,10 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				mc_access_token: getUser().mcAccessToken,
 				mc_refresh_token: getUser().refresh_token,
 			});
+
+			if (test && settings?.branch) {
+				settings.branch = branch;
+			}
 
 			if (auth?.raw && auth.user && context.setProps) {
 				context.setProps({
@@ -386,6 +397,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 										afterLaunch: SettingsManager.getSettings().afterLaunch,
 										preLoadCosmetics:
 											SettingsManager.getSettings().preLoadCosmetics,
+										testBranch: SettingsManager.getSettings().testBranch,
 									});
 								}}
 								colorScheme={"yellow"}
@@ -444,6 +456,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 											afterLaunch: SettingsManager.getSettings().afterLaunch,
 											preLoadCosmetics:
 												SettingsManager.getSettings().preLoadCosmetics,
+											testBranch: SettingsManager.getSettings().testBranch,
 										});
 									}}
 									colorScheme={"green"}
@@ -451,14 +464,16 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 									id="test"
 								/>
 							</Stack>
-							<Button
-								minW={i18n.language === "ru" ? "146px" : "123.27px"}
+							<Input
+								maxW={i18n.language === "ru" ? "146px" : "123.27px"}
+								w="full"
 								size="sm"
-								onClick={() => ipcRenderer.send("app/getCustomJar")}
+								borderRadius={"lg"}
+								value={branch}
+								onChange={e => setBranch(e.currentTarget.value)}
 								isDisabled={isLoading}
-							>
-								Custom Jar
-							</Button>
+								placeholder="Branch"
+							></Input>
 						</Stack>
 					)}
 					<Stack direction={"row"} w="full" justifyContent={"space-between"}>

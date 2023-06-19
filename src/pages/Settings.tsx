@@ -56,6 +56,7 @@ function Settings({
 				discord: discord,
 				afterLaunch: "hide",
 				preLoadCosmetics,
+				testBranch: settings.testBranch,
 			});
 		}
 	);
@@ -107,6 +108,7 @@ function Settings({
 								discord: discord,
 								afterLaunch: "hide",
 								preLoadCosmetics,
+								testBranch: settings.testBranch,
 							});
 						}}
 						max={ram - (versionIndex > 2 ? 2000 : 2)}
@@ -154,6 +156,7 @@ function Settings({
 								discord: discord,
 								afterLaunch: "hide",
 								preLoadCosmetics,
+								testBranch: settings.testBranch,
 							});
 						}}
 					/>
@@ -183,6 +186,7 @@ function Settings({
 								discord: discord,
 								afterLaunch: "hide",
 								preLoadCosmetics,
+								testBranch: settings.testBranch,
 							});
 						}}
 					/>
@@ -209,6 +213,7 @@ function Settings({
 								discord: !discord,
 								afterLaunch: "hide",
 								preLoadCosmetics,
+								testBranch: settings.testBranch,
 							});
 							setDiscord(!discord);
 						}}

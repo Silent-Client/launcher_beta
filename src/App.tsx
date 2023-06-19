@@ -95,6 +95,7 @@ function App() {
 						height: getSettings().height,
 						discord: getSettings().discord,
 						afterLaunch: getSettings().afterLaunch,
+						testBranch: getSettings().testBranch,
 						preLoadCosmetics: true,
 					});
 				}
@@ -109,6 +110,7 @@ function App() {
 						height: getSettings().height,
 						discord: getSettings().discord,
 						afterLaunch: getSettings().afterLaunch,
+						testBranch: getSettings().testBranch,
 						preLoadCosmetics: true,
 					});
 				}
@@ -143,6 +145,7 @@ function App() {
 							discord: getSettings().discord,
 							afterLaunch: getSettings().afterLaunch,
 							preLoadCosmetics: getSettings().preLoadCosmetics,
+							testBranch: getSettings().testBranch,
 						});
 					}
 				}

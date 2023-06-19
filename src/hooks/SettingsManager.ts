@@ -22,6 +22,7 @@ export function getSettings() {
 			discord: false,
 			afterLaunch: "hide",
 			preLoadCosmetics: true,
+			testBranch: "test",
 		} as Settings;
 	}
 }

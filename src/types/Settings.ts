@@ -1,6 +1,6 @@
 export default interface Settings {
 	memory: number;
-	branch: "stable" | "experimental" | "test" | "custom";
+	branch: string;
 	version: "1.8" | "1.12";
 	jarPath: string | null;
 	minecraftPath: string;
@@ -9,4 +9,5 @@ export default interface Settings {
 	discord: boolean;
 	afterLaunch: "hide" | "show";
 	preLoadCosmetics: boolean;
+	testBranch: string;
 }
