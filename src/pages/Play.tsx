@@ -193,6 +193,13 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 		if (isLoading) {
 			return;
 		}
+		if (test) {
+			launch({
+				...SettingsManager.getSettings(),
+				branch: branch,
+			});
+			return;
+		}
 		setUpdating(false);
 		setIsLoading(true);
 		try {
@@ -203,10 +210,6 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				mc_access_token: getUser().mcAccessToken,
 				mc_refresh_token: getUser().refresh_token,
 			});
-
-			if (test && settings?.branch) {
-				settings.branch = branch;
-			}
 
 			if (auth?.raw && auth.user && context.setProps) {
 				context.setProps({
