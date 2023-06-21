@@ -91,6 +91,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	const { t } = useTranslation();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [status, setStatus] = useState<string>("");
+	const [progress, setProgress] = useState<number>(0);
 	const [beta, setBeta] = useState<boolean>(
 		SettingsManager.getSettings().branch === "experimental"
 	);
@@ -118,8 +119,9 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 
 	ipcRenderer?.on(
 		"launch/status",
-		function (evt: any, message: { status: string }) {
+		function (evt: any, message: { status: string; progress: number }) {
 			setStatus(message.status);
+			setProgress(message.progress);
 		}
 	);
 
@@ -643,7 +645,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 							mt={5}
 							colorScheme={"whiteAlpha"}
 							borderRadius={"lg"}
-							isIndeterminate
+							value={progress}
 						/>
 						<Center>
 							<Text mt={3}>{status}</Text>
