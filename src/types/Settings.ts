@@ -10,4 +10,5 @@ export default interface Settings {
 	afterLaunch: "hide" | "show";
 	preLoadCosmetics: boolean;
 	testBranch: string;
+	customJavaPath: string | null;
 }

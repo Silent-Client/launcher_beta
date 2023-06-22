@@ -1,7 +1,10 @@
 import {
+	Button,
 	Container,
 	Heading,
 	Input,
+	InputGroup,
+	InputRightElement,
 	Link,
 	Slider,
 	SliderFilledTrack,
@@ -38,6 +41,7 @@ function Settings({
 	const [discord, setDiscord] = useState(settings.discord);
 	const [preLoadCosmetics, setPreLoadCosmetics] = useState(false);
 	const [path, setPath] = useState(settings.minecraftPath);
+	const [customJavaPath, setCustomJavaPath] = useState(settings.customJavaPath);
 
 	const [showTooltip, setShowTooltip] = useState(false);
 
@@ -57,6 +61,28 @@ function Settings({
 				afterLaunch: "hide",
 				preLoadCosmetics,
 				testBranch: settings.testBranch,
+				customJavaPath: customJavaPath,
+			});
+		}
+	);
+
+	ipcRenderer?.on(
+		"settings/customJavaPath",
+		function (evt: any, message: { path: string }) {
+			setCustomJavaPath(message.path);
+			setSettings({
+				branch: settings.branch,
+				version: settings.version,
+				jarPath: settings.jarPath,
+				minecraftPath: settings.minecraftPath,
+				width: width,
+				height: height,
+				memory: memory,
+				discord: discord,
+				afterLaunch: "hide",
+				preLoadCosmetics,
+				testBranch: settings.testBranch,
+				customJavaPath: message.path,
 			});
 		}
 	);
@@ -72,7 +98,9 @@ function Settings({
 						w="full"
 						spacing={1}
 					>
-						<Heading size={"sm"}>{t("settings.path")}</Heading>
+						<Heading w="10%" size={"sm"}>
+							{t("settings.path")}
+						</Heading>
 						<Input
 							size={"sm"}
 							placeholder="Path"
@@ -92,7 +120,57 @@ function Settings({
 					w="full"
 					spacing={1}
 				>
-					<Heading size={"sm"}>{t("settings.ram")}</Heading>
+					<Heading size={"sm"} w="10%">
+						Java Path
+					</Heading>
+					<InputGroup>
+						<Input
+							size={"sm"}
+							placeholder="Path"
+							value={path}
+							readOnly
+							onClick={() =>
+								ipcRenderer.send("app/getCustomJavaPath", {
+									defaultPath: getSettings().customJavaPath,
+								})
+							}
+						/>
+						<InputRightElement h={8} width="4.5rem">
+							<Button
+								h="1.5rem"
+								size="sm"
+								onClick={() => {
+									setCustomJavaPath(null);
+									setSettings({
+										branch: settings.branch,
+										version: settings.version,
+										jarPath: settings.jarPath,
+										minecraftPath: path,
+										width: width,
+										height: height,
+										memory: memory,
+										discord: discord,
+										afterLaunch: "hide",
+										preLoadCosmetics,
+										testBranch: settings.testBranch,
+										customJavaPath: null,
+									});
+								}}
+							>
+								Reset
+							</Button>
+						</InputRightElement>
+					</InputGroup>
+				</Stack>
+				<Stack
+					direction={"row"}
+					justifyContent="space-between"
+					w="full"
+					spacing={1}
+				>
+					<Heading w="10%" size={"sm"}>
+						{t("settings.ram")}
+					</Heading>
 					<Slider
 						colorScheme="whiteAlpha"
 						onChange={mem => {
@@ -109,6 +187,7 @@ function Settings({
 								afterLaunch: "hide",
 								preLoadCosmetics,
 								testBranch: settings.testBranch,
+								customJavaPath: customJavaPath,
 							});
 						}}
 						max={ram - (versionIndex > 2 ? 2000 : 2)}
@@ -137,7 +216,9 @@ function Settings({
 					w="full"
 					spacing={1}
 				>
-					<Heading size={"sm"}>{t("settings.width")}</Heading>
+					<Heading w="10%" size={"sm"}>
+						{t("settings.width")}
+					</Heading>
 					<Input
 						size={"sm"}
 						type="number"
@@ -157,6 +238,7 @@ function Settings({
 								afterLaunch: "hide",
 								preLoadCosmetics,
 								testBranch: settings.testBranch,
+								customJavaPath: customJavaPath,
 							});
 						}}
 					/>
@@ -167,7 +249,9 @@ function Settings({
 					w="full"
 					spacing={1}
 				>
-					<Heading size={"sm"}>{t("settings.height")}</Heading>
+					<Heading w="10%" size={"sm"}>
+						{t("settings.height")}
+					</Heading>
 					<Input
 						size={"sm"}
 						type="number"
@@ -187,6 +271,7 @@ function Settings({
 								afterLaunch: "hide",
 								preLoadCosmetics,
 								testBranch: settings.testBranch,
+								customJavaPath: customJavaPath,
 							});
 						}}
 					/>
@@ -214,6 +299,7 @@ function Settings({
 								afterLaunch: "hide",
 								preLoadCosmetics,
 								testBranch: settings.testBranch,
+								customJavaPath: customJavaPath,
 							});
 							setDiscord(!discord);
 						}}
@@ -225,7 +311,9 @@ function Settings({
 					w="full"
 					spacing={1}
 				>
-					<Heading size={"sm"}>{t("settings.language")}</Heading>
+					<Heading w="10%" size={"sm"}>
+						{t("settings.language")}
+					</Heading>
 					<Link
 						onClick={() =>
 							i18n.changeLanguage(i18n.language === "ru" ? "en-US" : "ru")

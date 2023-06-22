@@ -97,6 +97,7 @@ function App() {
 						afterLaunch: getSettings().afterLaunch,
 						testBranch: getSettings().testBranch,
 						preLoadCosmetics: true,
+						customJavaPath: getSettings().customJavaPath,
 					});
 				}
 				if (versionIndex > 2 && getSettings().memory < 1000) {
@@ -112,6 +113,7 @@ function App() {
 						afterLaunch: getSettings().afterLaunch,
 						testBranch: getSettings().testBranch,
 						preLoadCosmetics: true,
+						customJavaPath: getSettings().customJavaPath,
 					});
 				}
 				console.log(
@@ -146,6 +148,7 @@ function App() {
 							afterLaunch: getSettings().afterLaunch,
 							preLoadCosmetics: getSettings().preLoadCosmetics,
 							testBranch: getSettings().testBranch,
+							customJavaPath: getSettings().customJavaPath,
 						});
 					}
 				}

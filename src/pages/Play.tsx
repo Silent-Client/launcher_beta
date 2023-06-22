@@ -140,6 +140,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				afterLaunch: SettingsManager.getSettings().afterLaunch,
 				preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
 				testBranch: SettingsManager.getSettings().testBranch,
+				customJavaPath: SettingsManager.getSettings().customJavaPath,
 			});
 		}
 	);
@@ -157,6 +158,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 			afterLaunch: SettingsManager.getSettings().afterLaunch,
 			preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
 			testBranch: SettingsManager.getSettings().testBranch,
+			customJavaPath: SettingsManager.getSettings().customJavaPath,
 		});
 		if (
 			(SettingsManager.getSettings().branch === "experimental" &&
@@ -177,6 +179,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				afterLaunch: SettingsManager.getSettings().afterLaunch,
 				preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
 				testBranch: SettingsManager.getSettings().testBranch,
+				customJavaPath: SettingsManager.getSettings().customJavaPath,
 			});
 		}
 		const getData = async () => {
@@ -402,6 +405,8 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 										preLoadCosmetics:
 											SettingsManager.getSettings().preLoadCosmetics,
 										testBranch: SettingsManager.getSettings().testBranch,
+										customJavaPath:
+											SettingsManager.getSettings().customJavaPath,
 									});
 								}}
 								colorScheme={"yellow"}
@@ -461,6 +466,8 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 											preLoadCosmetics:
 												SettingsManager.getSettings().preLoadCosmetics,
 											testBranch: SettingsManager.getSettings().testBranch,
+											customJavaPath:
+												SettingsManager.getSettings().customJavaPath,
 										});
 									}}
 									colorScheme={"green"}
