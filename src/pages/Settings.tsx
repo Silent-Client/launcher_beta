@@ -127,7 +127,7 @@ function Settings({
 						<Input
 							size={"sm"}
 							placeholder="Path"
-							value={path}
+							value={customJavaPath || ""}
 							readOnly
 							onClick={() =>
 								ipcRenderer.send("app/getCustomJavaPath", {
