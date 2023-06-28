@@ -62,6 +62,7 @@ function Settings({
 				preLoadCosmetics,
 				testBranch: settings.testBranch,
 				customJavaPath: customJavaPath,
+				sc2: settings.sc2,
 			});
 		}
 	);
@@ -83,6 +84,7 @@ function Settings({
 				preLoadCosmetics,
 				testBranch: settings.testBranch,
 				customJavaPath: message.path,
+				sc2: settings.sc2,
 			});
 		}
 	);
@@ -154,6 +156,7 @@ function Settings({
 										preLoadCosmetics,
 										testBranch: settings.testBranch,
 										customJavaPath: null,
+										sc2: settings.sc2,
 									});
 								}}
 							>
@@ -188,6 +191,7 @@ function Settings({
 								preLoadCosmetics,
 								testBranch: settings.testBranch,
 								customJavaPath: customJavaPath,
+								sc2: settings.sc2,
 							});
 						}}
 						max={ram - (versionIndex > 2 ? 2000 : 2)}
@@ -239,6 +243,7 @@ function Settings({
 								preLoadCosmetics,
 								testBranch: settings.testBranch,
 								customJavaPath: customJavaPath,
+								sc2: settings.sc2,
 							});
 						}}
 					/>
@@ -272,6 +277,7 @@ function Settings({
 								preLoadCosmetics,
 								testBranch: settings.testBranch,
 								customJavaPath: customJavaPath,
+								sc2: settings.sc2,
 							});
 						}}
 					/>
@@ -300,6 +306,7 @@ function Settings({
 								preLoadCosmetics,
 								testBranch: settings.testBranch,
 								customJavaPath: customJavaPath,
+								sc2: settings.sc2,
 							});
 							setDiscord(!discord);
 						}}

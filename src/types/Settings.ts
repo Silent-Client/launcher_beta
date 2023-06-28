@@ -11,4 +11,5 @@ export default interface Settings {
 	preLoadCosmetics: boolean;
 	testBranch: string;
 	customJavaPath: string | null;
+	sc2: boolean;
 }

@@ -101,6 +101,9 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	const [branch, setBranch] = useState<string>(
 		SettingsManager.getSettings().testBranch || "test"
 	);
+	const [sc2, setSc2] = useState<boolean>(
+		SettingsManager.getSettings().sc2 || false
+	);
 	const [version, setVersion] = useState<"1.8" | "1.12">("1.8");
 	const [updating, setUpdating] = useState<boolean>(false);
 	const toast = useToast();
@@ -141,6 +144,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
 				testBranch: SettingsManager.getSettings().testBranch,
 				customJavaPath: SettingsManager.getSettings().customJavaPath,
+				sc2: SettingsManager.getSettings().sc2,
 			});
 		}
 	);
@@ -159,6 +163,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 			preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
 			testBranch: SettingsManager.getSettings().testBranch,
 			customJavaPath: SettingsManager.getSettings().customJavaPath,
+			sc2: SettingsManager.getSettings().sc2,
 		});
 		if (
 			(SettingsManager.getSettings().branch === "experimental" &&
@@ -180,6 +185,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				preLoadCosmetics: SettingsManager.getSettings().preLoadCosmetics,
 				testBranch: SettingsManager.getSettings().testBranch,
 				customJavaPath: SettingsManager.getSettings().customJavaPath,
+				sc2: SettingsManager.getSettings().sc2,
 			});
 		}
 		const getData = async () => {
@@ -208,6 +214,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 		setIsLoading(true);
 		try {
 			setStatus("Refreshing authorization");
+			console.log(SettingsManager.getSettings());
 
 			const auth = await refreshAccount({
 				access_token: getUser().accessToken,
@@ -407,6 +414,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 										testBranch: SettingsManager.getSettings().testBranch,
 										customJavaPath:
 											SettingsManager.getSettings().customJavaPath,
+										sc2: SettingsManager.getSettings().sc2,
 									});
 								}}
 								colorScheme={"yellow"}
@@ -439,53 +447,111 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 						</RLink>
 					</Stack>
 					{isAdmin(context) && (
-						<Stack spacing={5} direction={"row"} justifyContent="space-between">
-							<Stack w="full" direction={"row"} justifyContent="space-between">
-								<Center h="full">
-									<Text fontSize={"lg"} fontWeight={"bold"}>
-										{t("launch.test")}:
-									</Text>
-								</Center>
-								<Switch
-									isChecked={test}
+						<>
+							<Stack
+								spacing={5}
+								direction={"row"}
+								justifyContent="space-between"
+							>
+								<Stack
+									maxW={i18n.language === "ru" ? "109.73px" : "132.73px"}
+									w="full"
+									direction={"row"}
+									justifyContent="space-between"
+								>
+									<Center h="full">
+										<Text fontSize={"lg"} fontWeight={"bold"}>
+											{t("launch.test")}:
+										</Text>
+									</Center>
+									<Switch
+										isChecked={test}
+										isDisabled={isLoading}
+										onChange={e => {
+											setBeta(false);
+											setTest(!test);
+											SettingsManager.setSettings({
+												memory: SettingsManager.getSettings().memory,
+												branch: !test ? "test" : "stable",
+												version: SettingsManager.getSettings().version,
+												jarPath: SettingsManager.getSettings().jarPath,
+												minecraftPath:
+													SettingsManager.getSettings().minecraftPath,
+												width: SettingsManager.getSettings().width,
+												height: SettingsManager.getSettings().height,
+												discord: SettingsManager.getSettings().discord,
+												afterLaunch: SettingsManager.getSettings().afterLaunch,
+												preLoadCosmetics:
+													SettingsManager.getSettings().preLoadCosmetics,
+												testBranch: SettingsManager.getSettings().testBranch,
+												customJavaPath:
+													SettingsManager.getSettings().customJavaPath,
+												sc2: SettingsManager.getSettings().sc2,
+											});
+										}}
+										colorScheme={"green"}
+										size={"lg"}
+										id="test"
+									/>
+								</Stack>
+								<Input
+									maxW={i18n.language === "ru" ? "146px" : "123.27px"}
+									w="full"
+									size="sm"
+									borderRadius={"lg"}
+									value={branch}
+									onChange={e => setBranch(e.currentTarget.value)}
 									isDisabled={isLoading}
-									onChange={e => {
-										setBeta(false);
-										setTest(!test);
-										SettingsManager.setSettings({
-											memory: SettingsManager.getSettings().memory,
-											branch: !test ? "test" : "stable",
-											version: SettingsManager.getSettings().version,
-											jarPath: SettingsManager.getSettings().jarPath,
-											minecraftPath:
-												SettingsManager.getSettings().minecraftPath,
-											width: SettingsManager.getSettings().width,
-											height: SettingsManager.getSettings().height,
-											discord: SettingsManager.getSettings().discord,
-											afterLaunch: SettingsManager.getSettings().afterLaunch,
-											preLoadCosmetics:
-												SettingsManager.getSettings().preLoadCosmetics,
-											testBranch: SettingsManager.getSettings().testBranch,
-											customJavaPath:
-												SettingsManager.getSettings().customJavaPath,
-										});
-									}}
-									colorScheme={"green"}
-									size={"lg"}
-									id="test"
-								/>
+									placeholder="Branch"
+								></Input>
 							</Stack>
-							<Input
-								maxW={i18n.language === "ru" ? "146px" : "123.27px"}
-								w="full"
-								size="sm"
-								borderRadius={"lg"}
-								value={branch}
-								onChange={e => setBranch(e.currentTarget.value)}
-								isDisabled={isLoading}
-								placeholder="Branch"
-							></Input>
-						</Stack>
+							<Stack
+								spacing={5}
+								direction={"row"}
+								justifyContent="space-between"
+							>
+								<Stack
+									maxW={i18n.language === "ru" ? "109.73px" : "132.73px"}
+									w="full"
+									direction={"row"}
+									justifyContent="space-between"
+								>
+									<Center h="full">
+										<Text fontSize={"lg"} fontWeight={"bold"}>
+											SC2:
+										</Text>
+									</Center>
+									<Switch
+										isChecked={sc2}
+										isDisabled={isLoading}
+										onChange={e => {
+											SettingsManager.setSettings({
+												memory: SettingsManager.getSettings().memory,
+												branch: !test ? "test" : "stable",
+												version: SettingsManager.getSettings().version,
+												jarPath: SettingsManager.getSettings().jarPath,
+												minecraftPath:
+													SettingsManager.getSettings().minecraftPath,
+												width: SettingsManager.getSettings().width,
+												height: SettingsManager.getSettings().height,
+												discord: SettingsManager.getSettings().discord,
+												afterLaunch: SettingsManager.getSettings().afterLaunch,
+												preLoadCosmetics:
+													SettingsManager.getSettings().preLoadCosmetics,
+												testBranch: SettingsManager.getSettings().testBranch,
+												customJavaPath:
+													SettingsManager.getSettings().customJavaPath,
+												sc2: !sc2,
+											});
+											setSc2(!sc2);
+										}}
+										colorScheme={"green"}
+										size={"lg"}
+										id="sc2"
+									/>
+								</Stack>
+							</Stack>
+						</>
 					)}
 					<Stack direction={"row"} w="full" justifyContent={"space-between"}>
 						<Center h="full">
