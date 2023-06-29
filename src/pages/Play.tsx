@@ -214,12 +214,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 			settings = {
 				...SettingsManager.getSettings(),
 				branch: branch,
-			};
-		}
-		if (sc2) {
-			settings = {
-				...settings,
-				version: "1.8.9",
+				version: sc2 ? "1.8.9" : "1.8",
 			};
 		}
 		setUpdating(false);
