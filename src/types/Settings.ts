@@ -1,7 +1,7 @@
 export default interface Settings {
 	memory: number;
 	branch: string;
-	version: "1.8" | "1.12";
+	version: string;
 	jarPath: string | null;
 	minecraftPath: string;
 	width: number;

@@ -216,6 +216,12 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				branch: branch,
 			};
 		}
+		if (sc2) {
+			settings = {
+				...settings,
+				version: "1.8.9",
+			};
+		}
 		setUpdating(false);
 		setIsLoading(true);
 		try {
