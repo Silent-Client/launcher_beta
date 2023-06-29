@@ -99,6 +99,7 @@ function App() {
 						preLoadCosmetics: true,
 						customJavaPath: getSettings().customJavaPath,
 						sc2: getSettings().sc2,
+						optifine: getSettings().optifine,
 					});
 				}
 				if (versionIndex > 2 && getSettings().memory < 1000) {
@@ -116,6 +117,7 @@ function App() {
 						preLoadCosmetics: true,
 						customJavaPath: getSettings().customJavaPath,
 						sc2: getSettings().sc2,
+						optifine: getSettings().optifine,
 					});
 				}
 				console.log(
@@ -152,6 +154,7 @@ function App() {
 							testBranch: getSettings().testBranch,
 							customJavaPath: getSettings().customJavaPath,
 							sc2: getSettings().sc2,
+							optifine: getSettings().optifine,
 						});
 					}
 				}

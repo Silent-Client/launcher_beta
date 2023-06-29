@@ -12,4 +12,5 @@ export default interface Settings {
 	testBranch: string;
 	customJavaPath: string | null;
 	sc2: boolean;
+	optifine: boolean;
 }

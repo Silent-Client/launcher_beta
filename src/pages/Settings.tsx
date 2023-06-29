@@ -63,6 +63,7 @@ function Settings({
 				testBranch: settings.testBranch,
 				customJavaPath: customJavaPath,
 				sc2: settings.sc2,
+				optifine: settings.optifine,
 			});
 		}
 	);
@@ -85,6 +86,7 @@ function Settings({
 				testBranch: settings.testBranch,
 				customJavaPath: message.path,
 				sc2: settings.sc2,
+				optifine: settings.optifine,
 			});
 		}
 	);
@@ -157,6 +159,7 @@ function Settings({
 										testBranch: settings.testBranch,
 										customJavaPath: null,
 										sc2: settings.sc2,
+										optifine: settings.optifine,
 									});
 								}}
 							>
@@ -192,6 +195,7 @@ function Settings({
 								testBranch: settings.testBranch,
 								customJavaPath: customJavaPath,
 								sc2: settings.sc2,
+								optifine: settings.optifine,
 							});
 						}}
 						max={ram - (versionIndex > 2 ? 2000 : 2)}
@@ -244,6 +248,7 @@ function Settings({
 								testBranch: settings.testBranch,
 								customJavaPath: customJavaPath,
 								sc2: settings.sc2,
+								optifine: settings.optifine,
 							});
 						}}
 					/>
@@ -278,6 +283,7 @@ function Settings({
 								testBranch: settings.testBranch,
 								customJavaPath: customJavaPath,
 								sc2: settings.sc2,
+								optifine: settings.optifine,
 							});
 						}}
 					/>
@@ -307,6 +313,7 @@ function Settings({
 								testBranch: settings.testBranch,
 								customJavaPath: customJavaPath,
 								sc2: settings.sc2,
+								optifine: settings.optifine,
 							});
 							setDiscord(!discord);
 						}}

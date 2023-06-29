@@ -104,6 +104,9 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 	const [sc2, setSc2] = useState<boolean>(
 		SettingsManager.getSettings().sc2 || false
 	);
+	const [optifine, setOptifine] = useState<boolean>(
+		SettingsManager.getSettings().optifine || false
+	);
 	const [version, setVersion] = useState<"1.8" | "1.12">("1.8");
 	const [updating, setUpdating] = useState<boolean>(false);
 	const toast = useToast();
@@ -145,6 +148,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				testBranch: SettingsManager.getSettings().testBranch,
 				customJavaPath: SettingsManager.getSettings().customJavaPath,
 				sc2: SettingsManager.getSettings().sc2,
+				optifine: SettingsManager.getSettings().optifine,
 			});
 		}
 	);
@@ -164,6 +168,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 			testBranch: SettingsManager.getSettings().testBranch,
 			customJavaPath: SettingsManager.getSettings().customJavaPath,
 			sc2: SettingsManager.getSettings().sc2,
+			optifine: SettingsManager.getSettings().optifine,
 		});
 		if (
 			(SettingsManager.getSettings().branch === "experimental" &&
@@ -186,6 +191,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 				testBranch: SettingsManager.getSettings().testBranch,
 				customJavaPath: SettingsManager.getSettings().customJavaPath,
 				sc2: SettingsManager.getSettings().sc2,
+				optifine: SettingsManager.getSettings().optifine,
 			});
 		}
 		const getData = async () => {
@@ -415,6 +421,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 										customJavaPath:
 											SettingsManager.getSettings().customJavaPath,
 										sc2: SettingsManager.getSettings().sc2,
+										optifine: SettingsManager.getSettings().optifine,
 									});
 								}}
 								colorScheme={"yellow"}
@@ -487,6 +494,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 												customJavaPath:
 													SettingsManager.getSettings().customJavaPath,
 												sc2: SettingsManager.getSettings().sc2,
+												optifine: SettingsManager.getSettings().optifine,
 											});
 										}}
 										colorScheme={"green"}
@@ -542,12 +550,49 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 												customJavaPath:
 													SettingsManager.getSettings().customJavaPath,
 												sc2: !sc2,
+												optifine: SettingsManager.getSettings().optifine,
 											});
 											setSc2(!sc2);
 										}}
 										colorScheme={"green"}
 										size={"lg"}
 										id="sc2"
+									/>
+								</Stack>
+								<Stack direction={"row"} justifyContent="space-between">
+									<Center h="full">
+										<Text fontSize={"lg"} fontWeight={"bold"}>
+											Optifine:
+										</Text>
+									</Center>
+									<Switch
+										isChecked={optifine}
+										isDisabled={isLoading}
+										onChange={e => {
+											SettingsManager.setSettings({
+												memory: SettingsManager.getSettings().memory,
+												branch: !test ? "test" : "stable",
+												version: SettingsManager.getSettings().version,
+												jarPath: SettingsManager.getSettings().jarPath,
+												minecraftPath:
+													SettingsManager.getSettings().minecraftPath,
+												width: SettingsManager.getSettings().width,
+												height: SettingsManager.getSettings().height,
+												discord: SettingsManager.getSettings().discord,
+												afterLaunch: SettingsManager.getSettings().afterLaunch,
+												preLoadCosmetics:
+													SettingsManager.getSettings().preLoadCosmetics,
+												testBranch: SettingsManager.getSettings().testBranch,
+												customJavaPath:
+													SettingsManager.getSettings().customJavaPath,
+												sc2: SettingsManager.getSettings().sc2,
+												optifine: !optifine,
+											});
+											setOptifine(!optifine);
+										}}
+										colorScheme={"green"}
+										size={"lg"}
+										id="optifine"
 									/>
 								</Stack>
 							</Stack>
@@ -791,7 +836,7 @@ function Play({ news, versionIndex }: { news: News[]; versionIndex: number }) {
 								</Stack>
 								<Box minH="427px">
 									<LazyLoadImage
-										src={`https://image.eitherdigital.ru/resize?image=https://api.silentclient.net${item.cover}&w=1920&h=1080`}
+										src={`https://cdn.silentclient.net/assets${item.cover}`}
 										effect="blur"
 										width={"100%"}
 										height={"auto"}
